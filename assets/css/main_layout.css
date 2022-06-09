@@ -1,0 +1,121 @@
+body {
+	background-color: #F0F0DE;
+}
+
+@media (min-width: 769px){
+	.sidebar{
+		width: 200px;
+	}
+}
+
+.login-container {
+    height: calc(100% - 46px);
+}
+
+.navbar-inverse {
+	background-color: #4E5153;
+    border-color: #4E5153;
+}
+
+.navbar-inverse .navbar-nav>li>a, .navbar-inverse .navbar-text {
+	color: #F0F0DE;
+}
+
+.navbar + .login-container {
+    height: calc(100% - 46px);
+}
+.navbar-brand {
+	padding:  5px 20px;
+}
+.navbar-brand > img {
+	margin-top: 0px;
+	height: 36px;
+}
+
+.navbar-header {
+	min-width: 150px;
+}
+
+.navbar-nav > .dropdown-user img {
+	min-height: 76px;
+	margin-top: 0px;
+	border-radius: 0;
+}
+
+.navbar-header > h1 {
+	font-size: 20px;
+	margin-bottom: 0px; 
+	margin-top: 10px;
+}
+
+.navbar-header > h3 {
+	margin-top: 0px; 
+	font-size: 18px;
+}
+
+.navbar > ul > li {
+	float: left;
+	min-width: 93px;
+}
+
+.page-header {
+	background-color: unset;
+	border-bottom: unset;
+}
+
+
+.memo-filed {
+	cursor: pointer;
+	border-right: 1px solid #ccc;
+}
+.picker__holder {
+	width: 250px;
+}
+
+.daterangepicker.dropdown-menu {
+	z-index: 1100;
+}
+
+.page-header .heading-elements.visible {
+	background-color: #fff;
+	padding:  10px;
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important
+}
+
+.login-logo {
+	height: 150px;
+	width: auto;
+}
+
+
+/*basic*/
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td
+{
+	padding: 8px 16px;
+} 
+.table > tbody > tr > td, .table > tfoot > tr > td {
+	padding: 6px 12px;
+}
+
+.btn-icon {
+	padding: 3px 5px;
+	border-radius: 8px;
+}
+.page-header {
+	margin:  0px;
+}
+.page-title {
+	padding: 15px 36px 0px 0;
+}
+
+.page-title a {
+	color: inherit;
+}
+
+table th {
+	font-weight: 600;
+}
+
+.dataTable td button {
+	margin: 1px;
+}
