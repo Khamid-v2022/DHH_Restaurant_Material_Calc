@@ -10,7 +10,7 @@ $(function() {
         $("#m_eenheden_id").trigger('change');
         $("#m_statiegeld_id").trigger('change');
 	});
-    $('#column_modal, #modal_download').on('hidden.bs.modal', function() {
+    $('#modal_download').on('hidden.bs.modal', function() {
         $(this).find('form').trigger('reset');
     });
     $('.select-search').select2();
@@ -26,7 +26,7 @@ $(function() {
         }, 
         { 
             className: 'text-right', 
-            targets: [5, 6, 7, 9, 10, 12, 14, 16, 17, 18, 19, 20] 
+            targets: [5, 6, 7, 9, 10, 12, 14, 16] 
         }],
         order: [[ 1, "asc" ]],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
@@ -57,16 +57,6 @@ $(function() {
         save();
     });
     
-    $("#m_c_form").submit(function(event) {
-        /* stop form from submitting normally */
-        event.preventDefault();
-
-        if (!event.target.checkValidity()) {
-            return false;
-        }
-        save_stock();
-    });
-
 
     $("#download_form").submit(function(event) {
         $('#modal_download').modal('toggle');
@@ -313,48 +303,6 @@ var save = function(){
 			}
 	});
 }
-
-
-var stock_modal = function(id, jaar, statiegeld_id, aantal_geteld, aantal_omdozen){
-    $("#m_c_sel_id").val(id);
-    if(jaar == 0)
-        $("#m_c_jaar").val($("#m_this_year").val());
-    else
-        $("#m_c_jaar").val(jaar);
-    
-    $("#m_c_statiegeld_id").val(statiegeld_id).trigger('change');
-    $("#m_c_aantal").val(aantal_geteld);
-    $("#m_c_aantal_omdozen").val(aantal_omdozen);
-    $("#column_modal").modal();
-}
-
-var save_stock = function(){
-    var id = $("#m_c_sel_id").val();
-    $.post(SITE_URL + 'leverancierslijst/update_info_1', 
-        {
-            sel_id: id,
-            jaar: $("#m_c_jaar").val(),
-            aantal_geteld: $("#m_c_aantal").val(),
-            statiegeld_id: $("#m_c_statiegeld_id").val(),
-            aantal_omdozen: $("#m_c_aantal_omdozen").val()
-        }, 
-        function(resp){
-            resp = JSON.parse(resp);
-            if(resp.status){
-                // swal({
-                //     title: resp.msg,
-                //     type: "success",
-                //     confirmButtonColor: "#2196F3"
-                // }, function(){
-                    $('#column_modal').modal('toggle');
-                    reload_table();
-                // });
-            } else {
-                
-            }
-    });
-}
-
 
 
 // upload data from Excel file

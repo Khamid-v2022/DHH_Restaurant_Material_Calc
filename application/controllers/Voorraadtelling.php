@@ -187,19 +187,27 @@ class Voorraadtelling extends Base_Controller {
 	}
 
 	public function get_leverancierslijst($id){
-		$list = $this->voorraadtelling_m->get_list_join("", "geef_productnaam ASC", array('voorraadtelling_id'=>$id));
+		// $list = $this->voorraadtelling_m->get_list_join("", "geef_productnaam ASC", array('voorraadtelling_id'=>$id));
+		$list = $this->voorraadtelling_m->get_stock_list($id);
 		$data = [];
 		$index = 0;
 		
 		for($index = 0; $index < count($list); $index++){
+			// if($list[$index]['aantal_geteld'] > 0 && $list[$index]['statiegeld']){
+			// 	$statiegeld = number_format($list[$index]['aantal_geteld'] * $list[$index]['statiegeld'], 7);
+			// }
 
 			$stock = "<button type='button' class='btn border-success text-success btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
 			
-			if($list[$index]['aantal_geteld'] > 0 && $list[$index]['statiegeld']){
-				$statiegeld = number_format($list[$index]['aantal_geteld'] * $list[$index]['statiegeld'], 7);
+			$additional_stock = "<button type='button' class='btn border-info text-info btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
+			$actions = $stock;
+			if($list[$index]['num'] > 0){
+				$actions = $stock . $additional_stock;
 			}
 
-			$array_item = array($stock, $list[$index]['geef_productnaam'], $list[$index]['leveranciers'],  $list[$index]['locatie'],  $list[$index]['inkoopcategorien'],  $list[$index]['artikelnummer'],  '€  ' . number_format($list[$index]['prijs_van'], 7, ',', '.'),  $list[$index]['aantal_verpakkingen'],  $list[$index]['eenheid'],  '€  ' . number_format($list[$index]['prijs_per'], 7, ',', '.'),  $list[$index]['inhoud_van'],  $list[$index]['eenheden'],  '€  ' . number_format($list[$index]['prijs_per_eenheid'], 7, ',', '.'),  $list[$index]['kleinste'],  $list[$index]['netto_stuks_prijs'],  $list[$index]['verpakking'], $list[$index]['statiegeld']==0 ? '-' : '€  ' . number_format($list[$index]['statiegeld'], 2, ',', '.'), $list[$index]['waarde_voorraad'], $list[$index]['waarde_voorraad2'], $list[$index]['waard_statiegeld'], $list[$index]['aantal_omdozen'], $list[$index]['aantal_geteld']);
+			$link = "<a href='" . site_url() . "voorraadtelling/view_stock_history/" . $list[$index]['id'] . "' target='_black'>" . $list[$index]['geef_productnaam'] . "</a>";
+
+			$array_item = array($actions, $link, $list[$index]['leveranciers'],  $list[$index]['locatie'],  $list[$index]['inkoopcategorien'],  $list[$index]['artikelnummer'],  '€  ' . number_format($list[$index]['prijs_van'], 7, ',', '.'),  $list[$index]['aantal_verpakkingen'],  $list[$index]['eenheid'],  '€  ' . number_format($list[$index]['prijs_per'], 7, ',', '.'),  $list[$index]['inhoud_van'],  $list[$index]['eenheden'],  '€  ' . number_format($list[$index]['prijs_per_eenheid'], 7, ',', '.'),  $list[$index]['kleinste'],  $list[$index]['netto_stuks_prijs'],  $list[$index]['verpakking'], $list[$index]['statiegeld']==0 ? '-' : '€  ' . number_format($list[$index]['statiegeld'], 2, ',', '.'), $list[$index]['waarde_voorraad'], $list[$index]['waarde_voorraad2'], $list[$index]['waard_statiegeld'], $list[$index]['aantal_omdozen'], $list[$index]['aantal_geteld']);
 			$data[] = $array_item;
 		}
 
@@ -214,14 +222,26 @@ class Voorraadtelling extends Base_Controller {
 	}
 
 	public function get_leverancierslijst_by_locatie($voorraadtelling_id, $locatie_id){
-		$list = $this->voorraadtelling_m->get_list_where("leverancierslijst_copy", array("voorraadtelling_id"=>$voorraadtelling_id, "locatie_id" => $locatie_id));
+		// $list = $this->voorraadtelling_m->get_list_where("leverancierslijst_copy", array("voorraadtelling_id"=>$voorraadtelling_id, "locatie_id" => $locatie_id));
+
+		$list = $this->voorraadtelling_m->get_stock_list_by_location($voorraadtelling_id, $locatie_id);
 
 		$data = [];
 		$index = 0;
 		
 		for($index = 0; $index < count($list); $index++){
 
-			$array_item = array($index + 1, $list[$index]['geef_productnaam']);
+			$stock = "<button type='button' class='btn border-success text-success btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
+			
+			$additional_stock = "<button type='button' class='btn border-info text-info btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
+			$actions = $stock;
+			if($list[$index]['num'] > 0){
+				$actions = $stock . $additional_stock;
+			}
+
+			$link = "<a href='" . site_url() . "voorraadtelling/view_stock_history/" . $list[$index]['id'] . "' target='_black'>" . $list[$index]['geef_productnaam'] . "</a>";
+
+			$array_item = array($actions, $link);
 			$data[] = $array_item;
 		}
 
@@ -240,11 +260,64 @@ class Voorraadtelling extends Base_Controller {
 		$this->generate_json($info);
 	}
 
+	// public function save_copy_stock(){
+	// 	$req = $this->input->post();
+		
+	// 	$where['id'] = $req['id'];
+	// 	$this->voorraadtelling_m->update_item('leverancierslijst_copy', $req, $where);
+	// 	$this->generate_json("");
+	// }
+
 	public function save_copy_stock(){
 		$req = $this->input->post();
+		$req['created_at'] = date("Y-m-d H:i:s");
+		$this->voorraadtelling_m->add_item('voorraadteling_puchase', $req);
+		$this->generate_json("");
+	}
+
+
+
+	// Stock History
+	public function view_stock_history($id){
+		$data['primary_menu'] = 'Voorraadtelling History';
+
+		$data['product_info'] = $this->voorraadtelling_m->get_item('leverancierslijst_copy', array('id' => $id));
+		$data['sel_id'] = $id;
+		$data['statiegelds'] = $this->function_m->get_list("basic_statiegeld", "statiegeld");
+		$data['locaties'] = $this->function_m->get_list("basic_locatie", "name");
 		
-		$where['id'] = $req['id'];
-		$this->voorraadtelling_m->update_item('leverancierslijst_copy', $req, $where);
+		$this->load->view('admin/header', $data);
+		$this->load->view('admin/stock_history', $data);
+		$this->load->view('template/footer');
+	}
+
+	public function get_stock_histories($leve_copy_id){
+		$list = $this->voorraadtelling_m->get_stock_histories($leve_copy_id);
+
+		$data = [];
+		$index = 0;
+		
+		for($index = 0; $index < count($list); $index++){
+
+			$item = $list[$index];
+			$bin = "<button type='button' class='btn border-warning text-warning-600 btn-flat btn-icon' onclick='delete_item(" . $item['id'] . ")' title='delete'><i class='icon-bin'></i></button>";
+
+			$array_item = array($bin, $item['created_at'], $item['inhoud_van'], $item['prijs_van'], $item['statiegeld'], $item['statiegeld_price'], $item['aantal_omdozen'], $item['lege_omdozen'], $item['omdoos_statiegeld_totaal'], $item['statiegeld2'], $item['statiegeld_eenheid2'], $item['losse_geteld'], $item['lege_geteld'], $item['statiegeld_losse_flessen'], $item['prijs_per_eenheid'], $item['waard_statiegeld'], $item['waarde_voorraad'], $item['waarde_voorraad2']);
+			$data[] = $array_item;
+		}
+
+		$result = array(      
+	        "recordsTotal" => count($list),
+	        "recordsFiltered" => count($list),
+	        "data" => $data
+	    );
+
+	    echo json_encode($result);
+	    exit();
+	}
+
+	public function delete_stock_history($history_id){
+		$this->voorraadtelling_m->delete_item('voorraadteling_puchase', array("id"=>$history_id));
 		$this->generate_json("");
 	}
 }

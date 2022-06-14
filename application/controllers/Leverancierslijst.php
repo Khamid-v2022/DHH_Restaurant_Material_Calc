@@ -41,24 +41,8 @@ class Leverancierslijst extends Base_Controller {
 			$edit = "<button type='button' class='btn border-info text-info-600 btn-flat btn-icon' onclick='edit_info(" . $list[$index]['id'] . ")' title='edit'><i class='icon-pencil'></i></button>";
 			$copy = "<button type='button' class='btn border-primary text-primary btn-flat btn-icon' onclick='copy_info(" . $list[$index]['id'] . ")' title='copy'><i class='icon-copy3'></i></button>";
 			$bin = "<button type='button' class='btn border-warning text-warning-600 btn-flat btn-icon' onclick='delete_info(" . $list[$index]['id'] . ")' title='delete'><i class='icon-bin'></i></button>";
-			$stock = "<button type='button' class='btn border-success text-success btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ", " . ($list[$index]['jaar'] > 0 ? $list[$index]['jaar'] : 0) . ", " . ($list[$index]['statiegeld_id'] ? $list[$index]['statiegeld_id'] : 0) . ", " . ($list[$index]['aantal_geteld'] > 0 ? $list[$index]['aantal_geteld'] : 0 ) . ", " . ($list[$index]['aantal_omdozen'] > 0 ? $list[$index]['aantal_omdozen'] : 0 ) . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
-			
-			// $voorraad = '';
-			// $statiegeld = '';
-			// if($list[$index]['aantal_geteld'] > 0 || $list[$index]['aantal_omdozen'] > 0){
-			// 	$voorraad = 0;
-			// 	if($list[$index]['aantal_geteld'] > 0)
-			// 		$voorraad = $list[$index]['aantal_geteld'] * $list[$index]['prijs_per_eenheid'];
-			// 	if($list[$index]['aantal_omdozen'] > 0)
-			// 		$voorraad += $list[$index]['aantal_omdozen'] * $list[$index]['netto_stuks_prijs'];
-			// 	$voorraad = number_format($voorraad, 2);
-			// }
-			
-			if($list[$index]['aantal_geteld'] > 0 && $list[$index]['statiegeld']){
-				$statiegeld = number_format($list[$index]['aantal_geteld'] * $list[$index]['statiegeld'], 7);
-			}
 
-			$array_item = array($edit . $copy . $bin, $list[$index]['geef_productnaam'], $list[$index]['leveranciers'],  $list[$index]['locatie'],  $list[$index]['inkoopcategorien'],  $list[$index]['artikelnummer'],  '€  ' . number_format($list[$index]['prijs_van'], 7, ',', '.'),  $list[$index]['aantal_verpakkingen'],  $list[$index]['eenheid'],  '€  ' . number_format($list[$index]['prijs_per'], 7, ',', '.'),  $list[$index]['inhoud_van'],  $list[$index]['eenheden'],  '€  ' . number_format($list[$index]['prijs_per_eenheid'], 7, ',', '.'),  $list[$index]['kleinste'],  $list[$index]['netto_stuks_prijs'],  $list[$index]['verpakking'], $list[$index]['statiegeld']==0 ? '-' : '€  ' . number_format($list[$index]['statiegeld'], 2, ',', '.'), $list[$index]['waarde_voorraad'], $list[$index]['waard_statiegeld'], $list[$index]['aantal_omdozen'], $list[$index]['aantal_geteld']);
+			$array_item = array($edit . $copy . $bin, $list[$index]['geef_productnaam'], $list[$index]['leveranciers'],  $list[$index]['locatie'],  $list[$index]['inkoopcategorien'],  $list[$index]['artikelnummer'],  '€  ' . number_format($list[$index]['prijs_van'], 7, ',', '.'),  $list[$index]['aantal_verpakkingen'],  $list[$index]['eenheid'],  '€  ' . number_format($list[$index]['prijs_per'], 7, ',', '.'),  $list[$index]['inhoud_van'],  $list[$index]['eenheden'],  '€  ' . number_format($list[$index]['prijs_per_eenheid'], 7, ',', '.'),  $list[$index]['kleinste'],  $list[$index]['netto_stuks_prijs'],  $list[$index]['verpakking'], $list[$index]['statiegeld']==0 ? '-' : '€  ' . number_format($list[$index]['statiegeld'], 2, ',', '.'));
 			$data[] = $array_item;
 		}
 
@@ -212,31 +196,6 @@ class Leverancierslijst extends Base_Controller {
 
 	}
 
-	public function update_info_1(){
-		$req = $this->input->post();
-		
-		$where['id'] = $req['sel_id'];
-		unset($req['sel_id']);
-		
-		if($req['statiegeld_id'] > 0){
-			$statiegeld = $this->leverancierslijst_m->get_item('basic_statiegeld', array('id'=>$req['statiegeld_id']));
-			$req['statiegeld_price'] = $statiegeld['price'];
-		
-
-			$leveran_info = $this->leverancierslijst_m->get_item('leverancierslijst', $where);
-			$aantal_omdozen = $req['aantal_omdozen'] ? $req['aantal_omdozen'] : 0;
-			$aantal_geteld = $req['aantal_geteld'] ? $req['aantal_geteld'] : 0;
-
-			$req['waard_statiegeld'] = number_format(($aantal_omdozen * $leveran_info['inhoud_van'] * $statiegeld['price']) + ($aantal_geteld * $statiegeld['price']), 7);
-
-			$req['waarde_voorraad'] = number_format(($aantal_omdozen * $leveran_info['inhoud_van'] * $leveran_info['prijs_van']) + ($aantal_geteld * $leveran_info['netto_stuks_prijs']), 7);
-
-		}
-
-		$this->leverancierslijst_m->update_item('leverancierslijst', $req, $where);
-		$this->generate_json("Updated!");
-	}
-
 	public function delete_info($id){
 		$this->leverancierslijst_m->delete_item('leverancierslijst', array('id'=>$id));
 		$this->generate_json("Deleted!");
@@ -282,17 +241,6 @@ class Leverancierslijst extends Base_Controller {
 	            $object->getActiveSheet()->setCellValueByColumnAndRow(14, $excel_row, $row['verpakking']);
 	            $object->getActiveSheet()->setCellValueByColumnAndRow(15, $excel_row, $row['statiegeld']);
 
-	            $voorraad = '';
-				$statiegeld = '';
-				if($row['aantal_geteld'] > 0 && $row['statiegeld'] && $row['inhoud_van']){
-					$voorraad = number_format($row['aantal_geteld'] * $row['statiegeld'] * $row['inhoud_van'], 7);
-				}
-				if($row['aantal_geteld'] > 0 && $row['statiegeld']){
-					$statiegeld = number_format($row['aantal_geteld'] * $row['statiegeld'], 7);
-				}
-				$object->getActiveSheet()->setCellValueByColumnAndRow(16, $excel_row, $voorraad);
-				$object->getActiveSheet()->setCellValueByColumnAndRow(17, $excel_row, $statiegeld);
-	            $object->getActiveSheet()->setCellValueByColumnAndRow(18, $excel_row, $row['aantal_geteld']);
 	            $excel_row++;
 	        }
         }

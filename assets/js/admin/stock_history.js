@@ -2,7 +2,7 @@ var table = null;
 var popup_table = null;
 
 $(function() { 
-    $('#voorraadtelling_add_modal, #voorraadtelling_stock_modal').on('hidden.bs.modal', function() {
+    $('#voorraadtelling_stock_modal').on('hidden.bs.modal', function() {
         $(this).find('form').trigger('reset');
     });
    
@@ -11,10 +11,11 @@ $(function() {
 
     $.extend( $.fn.dataTable.defaults, {
         autoWidth: false,
-        columnDefs: [{ 
-            orderable: false,
-            className: 'text-center'
-        }],
+        scrollX: true,
+        // columnDefs: [{ 
+        //     orderable: false,
+        //     className: 'text-center'
+        // }],
         // order: [[ 1, "asc" ]],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {
@@ -33,20 +34,6 @@ $(function() {
     });
 
     reload_table();  
-
-    $("#voorraadtelling_add_modal").submit(function(event) {
-        /* stop form from submitting normally */
-        event.preventDefault();
-
-        if (!event.target.checkValidity()) {
-            return false;
-        }
-        save_voorraadtelling();
-    });
-
-    $("#m_locatie").on("change", function(){
-        reload_popup_table();
-    })
 
     // stock modal actions
     $("#m_statiegeld_omdoos").on("change", function(){
@@ -109,7 +96,7 @@ var reload_table = function(){
     if(table)
         table.destroy();
     table = $('#main_table').DataTable({
-        ajax: SITE_URL + 'voorraadtelling/get_list',
+        ajax: SITE_URL + 'voorraadtelling/get_stock_histories/' + $("#sel_id").val(),
         stateSave: true,
         columnDefs: [{
             width: 200,
@@ -127,73 +114,8 @@ var reload_table = function(){
     });
 }
 
-var reload_popup_table = function(){
-    if(popup_table)
-        popup_table.destroy();
-    popup_table = $('#popup_table').DataTable({
-        ajax: SITE_URL + 'voorraadtelling/get_leverancierslijst_by_locatie/' + $("#m_start_sel_id").val() + '/' + $("#m_locatie").val(),
-        pageLength: 15,
-        lengthMenu: [
-            [15, 25, 50, -1],
-            [15, 25, 50, 'All'],
-        ],
-        order: [[ 1, "asc" ]],
-        columnDefs: [{ 
-            orderable: false,
-            targets: [ 0 ],
-            width: 100,
-        }],
-    });
-
-    // Add placeholder to the datatable filter option
-    $('.dataTables_filter input[type=search]').attr('placeholder','Please enter the keyword');
-
-    // Enable Select2 select for the length option
-    $('.dataTables_length select').select2({
-        minimumResultsForSearch: Infinity,
-        width: 'auto'
-    });
-
-}
-
-var add_info_modal = function(){
-    $("#m_sel_id").val("");
-    $("#m_action_type").val("add");
-    $("#voorraadtelling_add_modal").modal();
-}
-
-var edit_item = function(id, name){
-    $("#m_sel_id").val(id);
-    $("#m_naam").val(name);
-    $("#m_action_type").val("edit");
-    $("#voorraadtelling_add_modal").modal();
-}
-
-var save_voorraadtelling = function(){
-    $.post(SITE_URL + 'voorraadtelling/update_info', 
-        {
-            action_type:  $("#m_action_type").val(),
-            sel_id: $("#m_sel_id").val(),
-            name: $("#m_naam").val()
-        }, function(resp){
-            resp = JSON.parse(resp);
-            if(resp.status){
-                $('#voorraadtelling_add_modal').modal('toggle');
-                reload_table();
-            }else{
-                swal({
-                    title: resp.msg,
-                    type: "warning",
-                    confirmButtonColor: "#2196F3"
-                }, function(){
-                    $('#voorraadtelling_add_modal').modal('toggle');
-                });
-            }
-    })
-}
-
 var delete_item = function(id){
-    $.post(SITE_URL + 'voorraadtelling/delete_item/' + id, function(resp){
+    $.post(SITE_URL + 'voorraadtelling/delete_stock_history/' + id, function(resp){
         resp = JSON.parse(resp);
         if(resp.status){
             reload_table();
@@ -201,19 +123,10 @@ var delete_item = function(id){
     })
 }
 
-var excel_download = function(id){
-    location.href = SITE_URL + 'voorraadtelling/excel/' + id;
-}
 
-var start_item = function(id){
-    $("#m_start_sel_id").val(id);
-    reload_popup_table();
-    $("#start_modal").modal();
-}
-
-var stock_modal = function(id){
-    $("#m_s_sel_id").val(id);
-    $.post(SITE_URL + 'voorraadtelling/get_copy_info/' + id, function(resp){
+var add_stock_modal = function(){
+    $("#m_s_sel_id").val($("#sel_id").val());
+    $.post(SITE_URL + 'voorraadtelling/get_copy_info/' + $("#sel_id").val(), function(resp){
         resp = JSON.parse(resp);
         if(resp.status){
             let info = resp.msg;
@@ -264,7 +177,7 @@ var save_stock = function(){
             resp = JSON.parse(resp);
             if(resp.status){
                  $("#voorraadtelling_stock_modal").modal('toggle');
-                 reload_popup_table();
+                 reload_table();
             }
         })
 }

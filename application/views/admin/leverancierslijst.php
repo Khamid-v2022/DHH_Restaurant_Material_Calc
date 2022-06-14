@@ -63,10 +63,6 @@
 							<th>Netto Stuks prijs</th>
 							<th>Verpakking</th>
 							<th>Statiegeld</th>
-							<th>Waarde voorraad</th>
-							<th>Waarde statiegeld</th>
-							<th>Aantal omdozen</th>
-							<th>Flessen geteld</th>
 						</tr>
 					</thead>
 					<tbody id="table_content">	
@@ -220,64 +216,6 @@
 								</div>	 -->			
 							</div>
 						</div>
-					</div>
-
-					<div class="modal-footer">
-						<button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">TOEVOEGEN</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-
-
-	<div id="column_modal" class="modal fade">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h5 class="modal-title"><span>Voorraadtelling</span></h5>
-				</div>
-				<input type="hidden" value="" id="m_c_sel_id">
-				<input type="hidden" value="<?=date('Y')?>" id="m_this_year">
-				<form action="#" class="form-horizontal" id="m_c_form">
-					<div class="modal-body">
-						<div class="form-group">
-							<label>Jaar</label>
-							<select class="form-control" id="m_c_jaar">
-								<?php 
-								$current_year = date('Y');
-								for($year = 2020; $year < 2050; $year++){
-
-									echo '<option value="' . $year . '" '; 
-									if($current_year == $year)
-										echo 'selected';
-									echo '>' . $year . '</option>';
-								}
-								?>
-							</select>
-							<!-- <input type="number" placeholder="Jaar" class="form-control" id="m_c_jaar" min="2010" max="2050" required value="<?=date('Y')?>"> -->
-						</div>
-						<div class="form-group">
-							<label>Verpakking</label>
-							<select class="select-search" id="m_c_statiegeld_id">
-								<option value="0"></option>
-								<?php 
-								foreach($statiegelds as $item){
-									echo '<option value="' . $item['id'] . '">' . $item['statiegeld'] . '</option>';
-								}
-								?>
-							</select>
-						</div>
-						<div class="form-group">
-							<label>Aantal omdozen</label>
-							<input type="number" placeholder="Aantal omdozen" class="form-control" id="m_c_aantal_omdozen" min="0">
-						</div>	
-						<div class="form-group">
-							<label>Flessen geteld</label>
-							<input type="number" placeholder="Flessen geteld" class="form-control" id="m_c_aantal" required min="0">
-						</div>	
 					</div>
 
 					<div class="modal-footer">
