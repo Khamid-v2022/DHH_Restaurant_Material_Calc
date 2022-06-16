@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once APPPATH . 'controllers/admin/Base_Controller.php';
 
-class Home extends MY_Controller {
+class Home extends Base_Controller {
 
 	public function __construct()
     {
@@ -11,7 +12,7 @@ class Home extends MY_Controller {
 	public function index()
 	{
 		$data['primary_menu'] = 'Home';
-		$this->load->view('header', $data);
+		$this->load->view('admin/header', $data);
 		$this->load->view('home');
 		$this->load->view('template/footer');
 	}

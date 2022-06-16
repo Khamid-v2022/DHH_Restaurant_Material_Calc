@@ -1,8 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-require_once APPPATH . 'controllers/Base_Controller.php';
 
-class Functions extends Base_Controller {
+class Functions extends MY_Controller {
 
 	public function __construct(){
         parent::__construct();
@@ -16,8 +15,8 @@ class Functions extends Base_Controller {
 			$data['leveranciernaam'] = $leveranciernaam[0];
 		}
 		
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/functions', $data);
+		$this->load->view('header', $data);
+		$this->load->view('functions', $data);
 		$this->load->view('template/footer');
 	}
 

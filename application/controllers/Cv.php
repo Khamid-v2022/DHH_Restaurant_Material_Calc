@@ -1,9 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once APPPATH . 'controllers/Base_Controller.php';
-
-class Cv extends Base_Controller {
+class Cv extends MY_Controller {
 
 	public function __construct(){
         parent::__construct();
@@ -16,8 +14,8 @@ class Cv extends Base_Controller {
 		
 		$data['primary_menu'] = 'Database verkoopproducten';
 		
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/cv_db', $data);
+		$this->load->view('header', $data);
+		$this->load->view('cv_db', $data);
 		$this->load->view('template/footer');
 	}
 

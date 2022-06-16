@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>DHH Admin Panel</title>
+	<title>DHH</title>
 
 	<!-- Global stylesheets -->
 	<link href="<?=base_url()?>assets/plugin/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
@@ -27,6 +27,7 @@
 	<script type="text/javascript" src="<?=base_url()?>assets/plugin/js/plugins/forms/selects/select2.min.js"></script>
 	<script type="text/javascript" src="<?=base_url()?>assets/plugin/js/plugins/ui/moment/moment.min.js"></script>
 	<script type="text/javascript" src="<?=base_url()?>assets/plugin/js/plugins/pickers/daterangepicker.js"></script>
+
 	<script type="text/javascript" src="<?=base_url()?>assets/plugin/js/plugins/tables/datatables/datatables.min.js"></script>
 
 	<script type="text/javascript" src="<?=base_url()?>assets/plugin/js/core/app.min.js"></script>
@@ -39,7 +40,6 @@
 	<!-- custom -->
 	<script type="text/javascript" src="<?=base_url()?>assets/js/global.js"></script>
 	<link href="<?=base_url()?>assets/css/main_layout.css" rel="stylesheet" type="text/css">
-	
 	<script type="text/javascript">
 		$(function() {
 			$('#change_password_modal').on('hidden.bs.modal', function() {
@@ -51,110 +51,110 @@
 			});
 		});
 
-		// function change_admin_password(id){
-		// 	var old_pass = $("#old_pass").val();
-		// 	var new_pass = $("#new_pass").val();
-		// 	var confirm_pass = $("#confirm_pass").val();
-		// 	if(!old_pass){
-		// 		swal({
-		// 			title: "Please enter the currenct password",
-		//             text: "",
-		//             type: "warning"}, function(){
-		//             	setTimeout(function(){
-		//             		$("#old_pass").focus();
-		//             	}, 100);
-		//             });
-		// 		return;
-		// 	}
+		function change_admin_password(id){
+			var old_pass = $("#old_pass").val();
+			var new_pass = $("#new_pass").val();
+			var confirm_pass = $("#confirm_pass").val();
+			if(!old_pass){
+				swal({
+					title: "Please enter the currenct password",
+		            text: "",
+		            type: "warning"}, function(){
+		            	setTimeout(function(){
+		            		$("#old_pass").focus();
+		            	}, 100);
+		            });
+				return;
+			}
 
-		// 	if(!new_pass || !confirm_pass || new_pass != confirm_pass){
-		// 		swal({
-		// 			title: "Please check the inputed value",
-		//             text: "",
-		//             type: "warning"});
-		// 		return;
-		// 	}
+			if(!new_pass || !confirm_pass || new_pass != confirm_pass){
+				swal({
+					title: "Please check the inputed value",
+		            text: "",
+		            type: "warning"});
+				return;
+			}
 
-		// 	$.post(SITE_URL + 'login/update_password', 
-		// 		{
-		// 			id: id,
-		// 			old_pass: old_pass,
-		// 			new_pass: new_pass
-		// 		}, 
-		// 		function(resp){
-		// 			if(resp=="yes"){
-		// 				swal({
-		// 					title: "Updated",
-		// 		            text: "",
-		// 		            type: "success"},function(){
-		// 		            	$('#change_password_modal').modal('toggle');
-		// 		        });
-		// 			}else{
-		// 				swal({
-		// 					title: "Please check your current password",
-		// 		            text: "",
-		// 		            type: "warning"});
-		// 				return;
-		// 			}
-		// 	});
-		// }
+			$.post(SITE_URL + 'login/update_password', 
+				{
+					id: id,
+					old_pass: old_pass,
+					new_pass: new_pass
+				}, 
+				function(resp){
+					if(resp=="yes"){
+						swal({
+							title: "Updated",
+				            text: "",
+				            type: "success"},function(){
+				            	$('#change_password_modal').modal('toggle');
+				        });
+					}else{
+						swal({
+							title: "Please check your current password",
+				            text: "",
+				            type: "warning"});
+						return;
+					}
+			});
+		}
 
-		// function change_admin_profile(id){
-		// 	var name = $("#m_profile_name").val();
-		// 	if(name == ""){
-		// 		swal({
-		// 			title: "Please enter the user name",
-		//             text: "",
-		//             type: "error"}, function(){
-		//             	setTimeout(function(){
-		//             		$("#m_profile_name").focus();
-		//             	}, 100);
-		//             });
-		// 		return;
-		// 	}
+		function change_admin_profile(id){
+			var name = $("#m_profile_name").val();
+			if(name == ""){
+				swal({
+					title: "Please enter the user name",
+		            text: "",
+		            type: "error"}, function(){
+		            	setTimeout(function(){
+		            		$("#m_profile_name").focus();
+		            	}, 100);
+		            });
+				return;
+			}
 
-		// 	var email = $("#m_email").val();
-		// 	if(email == ""){
-		// 		swal({
-		// 			title: "Please enter the email",
-		//             text: "",
-		//             type: "error"}, function(){
-		//             	setTimeout(function(){
-		//             		$("#m_email").focus();
-		//             	}, 100);
-		//             });
-		// 		return;
-		// 	}
+			var email = $("#m_email").val();
+			if(email == ""){
+				swal({
+					title: "Please enter the email",
+		            text: "",
+		            type: "error"}, function(){
+		            	setTimeout(function(){
+		            		$("#m_email").focus();
+		            	}, 100);
+		            });
+				return;
+			}
 
-		// 	$.post(SITE_URL + 'login/update_profile', 
-		// 		{
-		// 			id: id,
-		// 			user_name: name,
-		// 			email: email
-		// 		}, 
-		// 		function(resp){
-		// 			if(resp=="yes"){
-		// 				swal({
-		// 					title: "Updated",
-		// 		            text: "",
-		// 		            type: "success"},function(){
-		// 		            	location.reload();
-		// 		        });
-		// 			}else if(resp=="no"){
-		// 				swal({
-		// 					title: "Please enter the another name",
-		// 		            text: "",
-		// 		            type: "error"});
-		// 			}
-		// 	});
-		// }
+			$.post(SITE_URL + 'login/update_profile', 
+				{
+					id: id,
+					user_name: name,
+					email: email
+				}, 
+				function(resp){
+					if(resp=="yes"){
+						swal({
+							title: "Updated",
+				            text: "",
+				            type: "success"},function(){
+				            	location.reload();
+				        });
+					}else if(resp=="no"){
+						swal({
+							title: "Please enter the another name",
+				            text: "",
+				            type: "error"});
+					}
+			});
+		}
 
 	</script>
 </head>
 
 <body>
 	<?php 
-		if(isset($this->session->admin_data)) {
+		if(isset($this->session->user_data)) {
 	?>
 	<!-- change password modal -->
 	<div id="change_password_modal" class="modal fade">
@@ -199,7 +199,7 @@
 
 					<div class="modal-footer text-center">
 						<button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>					
-						<button type="button" class="btn btn-primary" onclick="change_admin_password(<?=$this->session->admin_data['id']?>)">Change <i class="icon-sync"></i></button>			
+						<button type="button" class="btn btn-primary" onclick="change_admin_password(<?=$this->session->user_data['id']?>)">Change <i class="icon-sync"></i></button>			
 					</div>
 				</form>
 			</div>
@@ -219,7 +219,7 @@
 						<div class="form-group has-feedback">
 							<label class="control-label col-sm-3">User name: </label>
 							<div class="col-sm-9">
-								<input type="text" placeholder="User name" class="form-control" id="m_profile_name" value="<?=$this->session->admin_data['user_name']?>" required>
+								<input type="text" placeholder="User name" class="form-control" id="m_profile_name" value="<?=$this->session->user_data['user_name']?>" required>
 								<div class="form-control-feedback">
 									<i class="icon-user text-muted"></i>
 								</div>
@@ -228,7 +228,7 @@
 						<div class="form-group has-feedback">
 							<label class="control-label col-sm-3">Email: </label>
 							<div class="col-sm-9">
-								<input type="email" placeholder="Email" class="form-control" id="m_email" value="<?=$this->session->admin_data['email']?>" required>
+								<input type="email" placeholder="Email" class="form-control" id="m_email" value="<?=$this->session->user_data['email']?>" required>
 								<div class="form-control-feedback">
 									<i class="icon-envelop2 text-muted"></i>
 								</div>
@@ -238,7 +238,7 @@
 
 					<div class="modal-footer text-center">
 						<button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
-						<button type="button" class="btn btn-primary" onclick="change_admin_profile(<?=$this->session->admin_data['id']?>)">Change <i class="icon-sync"></i></button>
+						<button type="button" class="btn btn-primary" onclick="change_admin_profile(<?=$this->session->user_data['id']?>)">Change <i class="icon-sync"></i></button>
 					</div>
 				</form>
 			</div>
@@ -247,11 +247,11 @@
 	<?php } ?>
 
 
-	<?php if(isset($this->session->admin_data)) { ?>
+	<?php if(isset($this->session->user_data)) { ?>
 		<!-- Main navbar -->
 		<div class="navbar navbar-inverse navbar-primary">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="<?=site_url()?>admin"><img src="<?=base_url()?>assets/img/logo_main.png" alt=""></a>
+				<a class="navbar-brand" href="<?=site_url()?>"><img src="<?=base_url()?>assets/img/logo_main.png" alt=""></a>
 
 				
 				<ul class="nav navbar-nav pull-right visible-xs-block">
@@ -263,31 +263,106 @@
 				<?php if(isset($primary_menu)) {?>
 					<ul class="nav navbar-nav">
 						<li class="<?php if($primary_menu == 'Home') echo 'active'?>">
-							<a href="<?=site_url()?>admin">
+							<a href="<?=site_url()?>">
 								<span><i class="icon-home2"></i></span>
 							</a>
 						</li>
+						<li class="dropdown dropdown-user">					
+							<a class="dropdown-toggle" data-toggle="dropdown">
+								<span>VERKOOPPRODUCTEN</span>
+								<i class="caret"></i>
+							</a>
 
-						<li class="<?php if($primary_menu == 'Users') echo 'active'?>">
-							<a href="<?=site_url()?>admin/users">
-								<i class="icon-users"></i>
-								<span class="position-right">Users</span>
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li class="dropdown <?php if($primary_menu == 'Calculatie Verkoopproducten') echo 'active'?>">
+									<a href="<?=site_url()?>calculatie">
+										<i class="icon-calculator2"></i>
+										<span class="position-right">Calculatie</span>
+									</a>
+								</li>
+								<li class="dropdown <?php if($primary_menu == 'Database verkoopproducten') echo 'active'?>">
+									<a href="<?=site_url()?>cv">
+										<i class="icon-database-time2"></i>
+										<span class="position-right">Database verkoopproducten</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown dropdown-user">					
+							<a class="dropdown-toggle" data-toggle="dropdown">
+								<span>RECEPTEN</span>
+								<i class="caret"></i>
+							</a>
+
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li class="dropdown <?php if($primary_menu == 'Calculatie Recepten') echo 'active'?>">
+									<a href="<?=site_url()?>calculatie_recepten">
+										<i class="icon-calculator2"></i>
+										<span class="position-right">Calculatie</span>
+									</a>
+								</li>
+								<li class="dropdown <?php if($primary_menu == 'Database recepten') echo 'active'?>">
+									<a href="<?=site_url()?>cr_db">
+										<i class="icon-database-time2"></i>
+										<span class="position-right">Database recepten</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						<li class="dropdown dropdown-user">					
+							<a class="dropdown-toggle" data-toggle="dropdown">
+								<i class="icon-cog3"></i>
+								<span  class="position-right">SETTINGS</span>
+								<i class="caret"></i>
+							</a>
+
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li class="dropdown <?php if($primary_menu == 'Functions') echo 'active'?>">
+									<a href="<?=site_url()?>functions">
+										<i class="icon-command"></i>
+										<span class="position-right">Functions</span>
+									</a>
+								</li>
+								<li class="dropdown <?php if($primary_menu == 'Leverancierslijst') echo 'active'?>">
+									<a href="<?=site_url()?>leverancierslijst">
+										<i class="icon-file-text2"></i>
+										<span class="position-right">Leverancierslijst</span>
+									</a>
+								</li>
+								<li class="dropdown <?php if($primary_menu == 'Prijsafwijkingen') echo 'active'?>">
+									<a href="<?=site_url()?>prijsafwijkingen">
+										<i class="icon-percent"></i>
+										<span class="position-right">Prijsafwijkingen</span>
+									</a>
+								</li>
+								 
+								<li class="dropdown <?php if($primary_menu == 'Users') echo 'active'?>">
+									<a href="<?=site_url()?>users">
+										<i class="icon-users"></i>
+										<span class="position-right">Users</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="<?php if($primary_menu == 'Voorraadtelling') echo 'active'?>">
+							<a href="<?=site_url()?>voorraadtelling">
+								<span>VOORRAADTELLING</span>
 							</a>
 						</li>
-						
 					</ul>
 				<?php }?>
 				<ul class="nav navbar-nav navbar-right">						
 					<li class="dropdown dropdown-user">					
 						<a class="dropdown-toggle" data-toggle="dropdown">
-							<span style="font-size: 18px"><?=$this->session->admin_data['user_name']?></span>
+							<span style="font-size: 18px"><?=$this->session->user_data['user_name']?></span>
 							<i class="caret"></i>
 						</a>
 
 						<ul class="dropdown-menu dropdown-menu-right">
 							<li><a data-toggle="modal" data-target="#change_profile_modal"><i class="icon-profile"></i> Profile</a></li>
 							<li><a data-toggle="modal" data-target="#change_password_modal"><i class="icon-lock5"></i> Change password</a></li>
-							<li><a href="<?=site_url()?>admin/login/sign_out"><i class="icon-switch2"></i> Logout</a></li>
+							<li><a href="<?=site_url()?>login/sign_out"><i class="icon-switch2"></i> Logout</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -295,7 +370,7 @@
 		</div>
 	<?php }?>
 	
-	<?php if(isset($this->session->admin_data) && isset($primary_menu)) {?>
+	<?php if(isset($this->session->user_data) && isset($primary_menu)) {?>
 	<!-- Page container -->
 	<div class="page-container">
 

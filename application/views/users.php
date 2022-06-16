@@ -1,5 +1,4 @@
-<script type="text/javascript" src="<?=base_url()?>assets/plugin/js/plugins/tables/datatables/datatables.min.js"></script>
-<script type="text/javascript" src="<?=base_url()?>assets/js/admin/users.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/js/users.js"></script>
 
 <style type="text/css">
 	.datatable-scroll {

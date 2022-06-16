@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-require_once APPPATH . 'controllers/Base_Controller.php';
 
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -12,7 +11,7 @@ require __DIR__ . '/../../vendor/phpmailer/phpmailer/src/PHPMailer.php';
 require __DIR__ . '/../../vendor/phpmailer/phpmailer/src/SMTP.php';
 require __DIR__ . '/../../vendor/phpmailer/phpmailer/src/Exception.php';
 
-class Users extends Base_Controller {
+class Users extends MY_Controller {
 
 	public function __construct(){
         parent::__construct();
@@ -24,8 +23,8 @@ class Users extends Base_Controller {
 		$data['primary_menu'] = 'Users';
 		
 		
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/users', $data);
+		$this->load->view('header', $data);
+		$this->load->view('users', $data);
 		$this->load->view('template/footer');
 	}
 

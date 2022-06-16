@@ -1,8 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-require_once APPPATH . 'controllers/Base_Controller.php';
 
-class Leverancierslijst extends Base_Controller {
+class Leverancierslijst extends MY_Controller {
 
 	public function __construct()
     {
@@ -25,8 +24,8 @@ class Leverancierslijst extends Base_Controller {
 		$data['kleinstes'] = $this->function_m->get_list("basic_kleinste", "name");
 		$data['statiegelds'] = $this->function_m->get_list("basic_statiegeld", "statiegeld");
 		
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/leverancierslijst', $data);
+		$this->load->view('header', $data);
+		$this->load->view('leverancierslijst', $data);
 		$this->load->view('template/footer');
 	}
 

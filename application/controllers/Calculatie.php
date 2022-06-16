@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-require_once APPPATH . 'controllers/Base_Controller.php';
-class Calculatie extends Base_Controller {
+
+class Calculatie extends MY_Controller {
 
 	public function __construct(){
         parent::__construct();
@@ -29,8 +29,8 @@ class Calculatie extends Base_Controller {
 		$data['basic_eenhedens'] = $this->calculatie_m->get_list('basic_eenheden');
 		$data['basic_kleinstes'] = $this->calculatie_m->get_list('basic_kleinste');
 
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/calculatie', $data);
+		$this->load->view('header', $data);
+		$this->load->view('calculatie', $data);
 		$this->load->view('template/footer');
 	}
 
@@ -52,8 +52,8 @@ class Calculatie extends Base_Controller {
 		$data['basic_eenhedens'] = $this->calculatie_m->get_list('basic_eenheden');
 		$data['basic_kleinstes'] = $this->calculatie_m->get_list('basic_kleinste');
 
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/calculatie', $data);
+		$this->load->view('header', $data);
+		$this->load->view('calculatie', $data);
 		$this->load->view('template/footer');
 	}
 

@@ -1,8 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-require_once APPPATH . 'controllers/Base_Controller.php';
 
-class Calculatie_recepten extends Base_Controller {
+class Calculatie_recepten extends MY_Controller {
 
 	public function __construct(){
         parent::__construct();
@@ -29,8 +28,8 @@ class Calculatie_recepten extends Base_Controller {
 
 		$data['recept_id'] = $this->calculatie_re_m->get_max_receptId()['max_recepten_id'] + 1;
 
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/calculatie_recepten', $data);
+		$this->load->view('header', $data);
+		$this->load->view('calculatie_recepten', $data);
 		$this->load->view('template/footer');
 	}
 
@@ -58,8 +57,8 @@ class Calculatie_recepten extends Base_Controller {
 		$data['basic_locaties'] = $this->calculatie_re_m->get_list('basic_locatie');
 		$data['basic_btws'] = $this->calculatie_re_m->get_list('basic_btw');
 
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/calculatie_recepten', $data);
+		$this->load->view('header', $data);
+		$this->load->view('calculatie_recepten', $data);
 		$this->load->view('template/footer');
 	}
 

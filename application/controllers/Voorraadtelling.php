@@ -1,8 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-require_once APPPATH . 'controllers/Base_Controller.php';
 
-class Voorraadtelling extends Base_Controller {
+class Voorraadtelling extends MY_Controller {
 
 	public function __construct()
     {
@@ -19,8 +18,8 @@ class Voorraadtelling extends Base_Controller {
 		$data['statiegelds'] = $this->function_m->get_list("basic_statiegeld", "statiegeld");
 		$data['locaties'] = $this->function_m->get_list("basic_locatie", "name");
 		
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/voorraadtelling', $data);
+		$this->load->view('header', $data);
+		$this->load->view('voorraadtelling', $data);
 		$this->load->view('template/footer');
 	}
 
@@ -181,8 +180,8 @@ class Voorraadtelling extends Base_Controller {
 		$data['statiegelds'] = $this->function_m->get_list("basic_statiegeld", "statiegeld");
 		$data['sel_id'] = $id;
 		
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/sel_leverancierslijst', $data);
+		$this->load->view('header', $data);
+		$this->load->view('sel_leverancierslijst', $data);
 		$this->load->view('template/footer');
 	}
 
@@ -286,8 +285,8 @@ class Voorraadtelling extends Base_Controller {
 		$data['statiegelds'] = $this->function_m->get_list("basic_statiegeld", "statiegeld");
 		$data['locaties'] = $this->function_m->get_list("basic_locatie", "name");
 		
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/stock_history', $data);
+		$this->load->view('header', $data);
+		$this->load->view('stock_history', $data);
 		$this->load->view('template/footer');
 	}
 

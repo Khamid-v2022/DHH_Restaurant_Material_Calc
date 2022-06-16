@@ -1,33 +1,7 @@
-<script type="text/javascript" src="<?=base_url()?>assets/plugin/js/plugins/tables/datatables/datatables.min.js"></script>
-<script type="text/javascript" src="<?=base_url()?>assets/js/admin/sel_leverancierslijst.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/js/stock_history.js"></script>
 
 <style type="text/css">
-	.datatable-scroll {
-	    width: 100%;
-	}
 	
-	.large-table-fake-top-scroll {
-	  overflow-x: scroll;
-	  overflow-y: auto;
-	}
-
-	.large-table-fake-top-scroll div {
-		font-size:1px;
-		line-height:1px;
-	}
-
-	.custom-sweet button.cancel {
-		background-color: #F4511E;
-		color: white;
-	}
-
-	.divider
-	{
-		height: 0;
-	    margin: 2rem 0;
-	    overflow: hidden;
-	    border-top: 1px solid #ddd;
-	}
 </style>
 <!-- Content area -->
 <div class="content">
@@ -37,43 +11,34 @@
 			<!-- Traffic sources -->
 			<div class="panel panel-flat">
 				<div class="panel-heading">
-					<h5 class="panel-title">Benodigde informatie voor voorraad telling</h5>
+					<h5 class="panel-title"><?=$product_info['geef_productnaam']?></h5>
+					<input type="hidden" id="sel_id" value="<?=$sel_id?>">
 					<div class="heading-elements">
-						
+						<button class="btn btn-sm btn-primary" type="button" onclick="add_stock_modal()"><i class="icon-plus2 position-left"></i>Toevoegen</button>
                 	</div>
 				</div>
 				
-				<input type="hidden" id="sel_id" value="<?=$sel_id?>">
-				
-				<div class="large-table-fake-top-scroll">
-				  	<div>&nbsp;</div>
-				</div>
-				
-				<table class="table datatable-ajax" id="data_table" data-page-length='25'>
+				<table class="table datatable-ajax" id="main_table" data-page-length='25'>
 					<thead>
 						<tr>
-							<th>Actie</th>
-							<th>Productnaam</th>
-							<th>Leveranciersnaam</th>
-							<th>Bar/Keuken/Kantoor</th>
-							<th>Inkoopcategorie</th>
-							<th>Artikelnummer leverancier</th>
-							<th>Prijs van omdoos</th>
-							<th>Aantal verpakkingen in omdoos</th>
-							<th>Eenheid van verpakking</th>
-							<th>Statiegeld groep</th>
-							<th>Inhoud van verpakking</th>
-							<th>Eenheid KG/L/Stuks</th>
-							<th>Prijs per eenheid in verpakking</th>
-							<th>Kleinste eenheid</th>
-							<th>Netto Stuks prijs</th>
-							<th>Verpakking</th>
-							<th>Statiegeld</th>
+							<th>Action</th>
+							<th>Register Date</th>
+							<th>Inhoud verpakking</th>
+							<th>Prijs omdoos</th>
+							<th>Statiegeld omdoos</th>
+							<th>Statiegeld eenheid</th>
+							<th>Aantal omdozen</th>
+							<th>Lege omdozen</th>
+							<th>Omdoos statiegeld totaal</th>
+							<th>Statiegeld los</th>
+							<th>Statiegeld eenheid</th>
+							<th>Losse geteld</th>
+							<th>Lege geteld</th>
+							<th>Statiegeld losse flessen</th>
+							<th>Prijs kleinste eenheid</th>
+							<th>Totaal Statiegeld</th>
 							<th>Waarde voorraad<br/>(Excl statiegeld)</th>
 							<th>Waarde voorraad<br/>(Incl statiegeld)</th>
-							<th>Waarde statiegeld</th>
-							<th>Aantal omdozen</th>
-							<th>Flessen geteld</th>
 						</tr>
 					</thead>
 					<tbody id="table_content">	
@@ -86,7 +51,7 @@
 	<!-- /main charts -->
 
 
-	<div id="voorraadtelling_modal" class="modal fade">
+	<div id="voorraadtelling_stock_modal" class="modal fade">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -96,7 +61,7 @@
 
 				<input id="m_s_sel_id" type="hidden">
 				
-				<form action="#" class="" id="m_voorraadtelling_form">
+				<form action="#" class="" id="m_voorraadtelling_stock_form">
 					<div class="modal-body">
 						<div class="row">
 							<div class="col-sm-6">

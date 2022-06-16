@@ -1,6 +1,4 @@
-<script type="text/javascript" src="<?=base_url()?>assets/plugin/js/plugins/tables/datatables/datatables.min.js"></script>
-
-<script type="text/javascript" src="<?=base_url()?>assets/js/admin/functions.js"></script>
+<script type="text/javascript" src="<?=base_url()?>assets/js/functions.js"></script>
 
 <!-- Content area -->
 <div class="content">

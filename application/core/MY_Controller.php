@@ -8,7 +8,7 @@ class MY_Controller extends CI_Controller {
         parent::__construct();
         date_default_timezone_set('America/Los_Angeles');
         if(!isset($this->session->user_data) || !$this->session->user_data['is_loggedin']){
-            redirect('auth');
+            redirect('login');
             return;
         }
     }

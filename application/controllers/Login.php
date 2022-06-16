@@ -21,8 +21,8 @@ class Login extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('admin/header');
-		$this->load->view('admin/login');
+		$this->load->view('header');
+		$this->load->view('login');
 		$this->load->view('template/footer');
 	}
 
@@ -38,7 +38,7 @@ class Login extends CI_Controller {
 			return;
 		}
 		$info['is_loggedin'] = true;
-		$this->session->set_userdata('admin_data', $info);
+		$this->session->set_userdata('user_data', $info);
 		echo 'yes';
 	}
 
@@ -80,7 +80,7 @@ class Login extends CI_Controller {
 		
 		$info = $this->auth_m->get_member($where);
 		$info['is_loggedin'] = true;
-		$this->session->set_userdata('admin_data', $info);
+		$this->session->set_userdata('user_data', $info);
 		echo 'yes';
 	}
 

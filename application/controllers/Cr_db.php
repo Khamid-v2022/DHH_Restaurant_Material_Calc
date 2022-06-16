@@ -1,9 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once APPPATH . 'controllers/Base_Controller.php';
-
-class Cr_db extends Base_Controller {
+class Cr_db extends MY_Controller {
 
 	public function __construct(){
         parent::__construct();
@@ -16,8 +14,8 @@ class Cr_db extends Base_Controller {
 		
 		$data['primary_menu'] = 'Database recepten';
 		
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/cr_db', $data);
+		$this->load->view('header', $data);
+		$this->load->view('cr_db', $data);
 		$this->load->view('template/footer');
 	}
 

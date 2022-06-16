@@ -1,8 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-require_once APPPATH . 'controllers/Base_Controller.php';
 
-class Prijsafwijkingen extends Base_Controller {
+class Prijsafwijkingen extends MY_Controller {
 
 	public function __construct()
     {
@@ -14,8 +13,8 @@ class Prijsafwijkingen extends Base_Controller {
 	{
 		$data['primary_menu'] = 'Prijsafwijkingen';
 		
-		$this->load->view('admin/header', $data);
-		$this->load->view('admin/prijsafwijkingen', $data);
+		$this->load->view('header', $data);
+		$this->load->view('prijsafwijkingen', $data);
 		$this->load->view('template/footer');
 	}
 
