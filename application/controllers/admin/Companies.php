@@ -1,17 +1,19 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-require __DIR__ . '/../../vendor/phpmailer/phpmailer/src/PHPMailer.php';
-require __DIR__ . '/../../vendor/phpmailer/phpmailer/src/SMTP.php';
-require __DIR__ . '/../../vendor/phpmailer/phpmailer/src/Exception.php';
+require __DIR__ . '/../../../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require __DIR__ . '/../../../vendor/phpmailer/phpmailer/src/SMTP.php';
+require __DIR__ . '/../../../vendor/phpmailer/phpmailer/src/Exception.php';
 
-class Users extends MY_Controller {
+require_once APPPATH . 'controllers/admin/Base_Controller.php';
+
+class Companies extends Base_Controller {
 
 	public function __construct(){
         parent::__construct();
@@ -20,48 +22,28 @@ class Users extends MY_Controller {
     }
 
 	public function index() {
-		$data['primary_menu'] = 'Users';
+		$data['primary_menu'] = 'Companies';
 		
-		$this->load->view('header', $data);
-		$this->load->view('users', $data);
+		$this->load->view('admin/header', $data);
+		$this->load->view('admin/companies', $data);
 		$this->load->view('template/footer');
 	}
 
-	public function update_leveranciernaam(){
-		$req = $this->input->post();
-		$info = $this->function_m->get_list('basic_leveranciernaam');
-		if(count($info) > 0){
-			$where['id'] = $info[0]['id'];
-			$this->function_m->update_item('basic_leveranciernaam', $req, $where);
-			$this->generate_json("Updated!");
-		}else{
-			$this->function_m->add_item('basic_leveranciernaam', $req);
-			$this->generate_json("Added!");
-		}
-	}
-
 	public function get_users(){
-		$list = $this->function_m->get_list_where('admin', array('company_id' => $this->session->user_data['company_id']));
+		$list = $this->function_m->get_list_where('admin', array('role' => '1'));
 	
 		$data = [];
 		
 		for($index = 0; $index < count($list); $index++){
-			$edit = "<button type='button' class='btn border-info text-info-600 btn-flat btn-icon' onclick='edit_user(\"" . $list[$index]['user_name'] . "\", \"" . $list[$index]['email'] . "\", \"" . $list[$index]['role'] . "\", " . $list[$index]['id'] . ")' title='edit'><i class='icon-pencil'></i></button>";
-
-			// can't delete it yourself 
-			if($this->session->user_data['id'] == $list[$index]['id']){
-				$bin = "";
-			} else {
-				$bin = "<button type='button' class='btn border-warning text-warning-600 btn-flat btn-icon position-right' onclick='delete_user(" . $list[$index]['id'] . ")' title='delete'><i class='icon-bin'></i></button>";
-			}
-			
+			$edit = "<button type='button' class='btn border-info text-info-600 btn-flat btn-icon' onclick='edit_user(\"" . $list[$index]['user_name'] . "\", \"" . $list[$index]['email'] . "\", \"" . $list[$index]['company_name'] . "\", " . $list[$index]['id'] . ")' title='edit'><i class='icon-pencil'></i></button>";
+			$bin = "<button type='button' class='btn border-warning text-warning-600 btn-flat btn-icon position-right' onclick='delete_user(" . $list[$index]['id'] . ")' title='delete'><i class='icon-bin'></i></button>";
 			$resset_pass = "<button type='button' class='btn border-success text-success btn-flat btn-icon position-right' onclick='reset_password(" . $list[$index]['id'] . ")' title='reset password'><i class='icon-unlocked2'></i></button>";
 
 			if($list[$index]['role'] == "1")
 				$role = "Admin";
 			else
 				$role = "User";
-			$array_item = array($list[$index]['user_name'], $list[$index]['email'], $role, $edit . $bin . $resset_pass);
+			$array_item = array($list[$index]['company_name'], $list[$index]['user_name'], $list[$index]['email'], $role, $edit . $bin . $resset_pass);
 
 			$data[] = $array_item;
 		}
@@ -76,7 +58,7 @@ class Users extends MY_Controller {
 	    exit();
 	}
 
-	public function save_user(){
+	public function save_company(){
 		$req = $this->input->post();
 		switch($req['action_type']){
 			case 'add':
@@ -89,14 +71,22 @@ class Users extends MY_Controller {
 
 				unset($req['action_type']);
 				unset($req['sel_id']);
+
+				// get max company_id
+				$req['company_id'] = intval($this->auth_m->get_max_companyId()['max_company_id']) + 1;
 				
-				$req['user_pass'] = sha1("123456");
+				$req['user_pass'] = sha1("Admin123456!");
 				$req['email'] = strtolower($req['email']);
-				$req['company_id'] = $this->session->user_data['company_id'];
-				$req['company_name'] = $this->session->user_data['company_name'];
-				
+				$req['role'] = '1';			//company admin
+
 				$this->function_m->add_item('admin', $req);
 
+				
+
+				// create basic functions table rows for this company
+				
+				$this->copy_basic_tables($req['company_id']);
+				
 				$this->generate_json("Saved");
 				$this->send_email($req['email']);
 				break;
@@ -120,15 +110,38 @@ class Users extends MY_Controller {
 		}
 	}
 
+	public function copy_basic_tables($new_company_id){
+		foreach(BASIC_COPY_TABLES as $table_name){
+			$list = $this->function_m->get_list_where($table_name, array('company_id' => '0'));
+			for($index = 0; $index < count($list); $index++){
+				unset($list[$index]['id']);
+				$list[$index]['company_id'] = $new_company_id;
+			}
+
+			$this->function_m->add_list($table_name, $list);
+		}
+	}
+
 	public function delete_user($id){
+		$info = $this->function_m->get_item('admin', array('id'=>$id));
+
 		$this->function_m->delete_item('admin', array('id'=>$id));
+		// Check if there is an admin in the same company
+		$exist = $this->function_m->get_list_where('admin', array('company_id' => $info['company_id']));
+		if(count($exist) == 0){
+			foreach(COMPANY_INFO_TABLES as $table_name){
+				$this->function_m->delete_item($table_name, array('company_id' =>  $info['company_id']));
+			}
+		}
+
+
 		$this->generate_json("Deleted!");
 	}
 
 	public function format_password($id){
 		$info['user_pass'] = sha1("123456");
 		$this->function_m->update_item('admin', $info, array("id"=>$id));
-		$this->generate_json("The password has been reset to 123456.");
+		$this->generate_json("The password has been reset to Admin123456!.");
 	}
 
 	private function send_email($email){
@@ -154,7 +167,7 @@ class Users extends MY_Controller {
 		    $mail->isHTML(true);                                  
 		    $mail->Subject = "Welcome";
 		    $mail->Body    = "<p>Welcome to DHH</p>";
-		    $mail->Body    = "<p>Password: 123456</p>";
+		    $mail->Body    = "<p>Password: Admin123456!</p>";
 		    $mail->Body    = "<p>Please login and reset password</p>";
 		    $mail->Body    .= "<a href='https://dhh.calculatie.restaurant/'>https://dhh.calculatie.restaurant/</a>";
 		    $mail->send();

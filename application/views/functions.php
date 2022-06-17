@@ -34,16 +34,16 @@
 						<div class="panel-heading">
 							<h5 class="panel-title">Eenheden</h5>
 							<input type="hidden" class="table-name" value="eenheden">
-							<div class="heading-elements">
+							<!-- <div class="heading-elements">
 								<button class="btn btn-sm btn-primary basic-item-add-btn" type="button"><i class="icon-plus2 position-left"></i>Toevoegen</button>
-		                	</div>
+		                	</div> -->
 						</div>
 						<table class="table datatable-ajax" id="eenheden_table">
 							<thead>
 								<tr>
 									<th>No</th>
 									<th>Name</th>
-									<th>Action</th>
+									<!-- <th>Action</th> -->
 								</tr>
 							</thead>
 							<tbody>	
@@ -181,16 +181,16 @@
 						<div class="panel-heading">
 							<h5 class="panel-title">Kleinste eenheden</h5>
 							<input type="hidden" class="table-name" value="kleinste">
-							<div class="heading-elements">
+							<!-- <div class="heading-elements">
 								<button class="btn btn-sm btn-primary basic-item-add-btn" type="button"><i class="icon-plus2 position-left"></i>Toevoegen</button>
-		                	</div>
+		                	</div> -->
 						</div>
 						<table class="table datatable-ajax" id="kleinste_table">
 							<thead>
 								<tr>
 									<th>No</th>
 									<th>Name</th>
-									<th>Action</th>
+									<!-- <th>Action</th> -->
 								</tr>
 							</thead>
 							<tbody>	

@@ -16,17 +16,17 @@ class Calculatie_recepten extends MY_Controller {
 
 		$data['mode'] = 0;
 
-		$data['basic_inkoopcategoriens'] = $this->calculatie_re_m->get_list('basic_inkoopcategorien');
-		$data['leverancierslijsts'] = $this->leverancierslijst_m->get_list("");
+		$data['basic_inkoopcategoriens'] = $this->calculatie_re_m->get_list_where('basic_inkoopcategorien', array('company_id'=>$this->session->user_data['company_id']));
+		$data['leverancierslijsts'] = $this->leverancierslijst_m->get_list_leve("",$this->session->user_data['company_id']);
 	
-		$data['basic_eenhedens'] = $this->calculatie_re_m->get_list('basic_eenheden');
-		$data['basic_omzetgroepens'] = $this->calculatie_re_m->get_list('basic_omzetgroepen');
-		$data['basic_kleinstes'] = $this->calculatie_re_m->get_list('basic_kleinste');
-		$data['basic_eenheids'] = $this->calculatie_re_m->get_list('basic_eenheid');
-		$data['basic_locaties'] = $this->calculatie_re_m->get_list('basic_locatie');
-		$data['basic_btws'] = $this->calculatie_re_m->get_list('basic_btw');
+		$data['basic_eenhedens'] = $this->calculatie_re_m->get_list_where('basic_eenheden', NULL);
+		$data['basic_omzetgroepens'] = $this->calculatie_re_m->get_list_where('basic_omzetgroepen', array('company_id'=>$this->session->user_data['company_id']));
+		$data['basic_kleinstes'] = $this->calculatie_re_m->get_list_where('basic_kleinste', NULL);
+		$data['basic_eenheids'] = $this->calculatie_re_m->get_list_where('basic_eenheid', array('company_id'=>$this->session->user_data['company_id']));
+		$data['basic_locaties'] = $this->calculatie_re_m->get_list_where('basic_locatie', array('company_id'=>$this->session->user_data['company_id']));
+		$data['basic_btws'] = $this->calculatie_re_m->get_list_where('basic_btw', array('company_id'=>$this->session->user_data['company_id']));
 
-		$data['recept_id'] = $this->calculatie_re_m->get_max_receptId()['max_recepten_id'] + 1;
+		$data['recept_id'] = $this->calculatie_re_m->get_max_receptId($this->session->user_data['company_id'])['max_recepten_id'] + 1;
 
 		$this->load->view('header', $data);
 		$this->load->view('calculatie_recepten', $data);
@@ -41,21 +41,21 @@ class Calculatie_recepten extends MY_Controller {
 		
 		$data['ticket'] = $this->calculatie_re_m->get_item('recepten_ticket', array('id' => $ticket_id));
 
-		$data['basic_inkoopcategoriens'] = $this->calculatie_re_m->get_list('basic_inkoopcategorien');
-		$data['leverancierslijsts'] = $this->leverancierslijst_m->get_list("");
+		$data['basic_inkoopcategoriens'] = $this->calculatie_re_m->get_list_where('basic_inkoopcategorien', array('company_id'=>$this->session->user_data['company_id']));
+		$data['leverancierslijsts'] = $this->leverancierslijst_m->get_list_leve("", $this->session->user_data['company_id']);
 		
 		if($data['ticket']){
 			$where['recepten_ticket_id'] = $data['ticket']['id'];
-			$data['lists'] = $this->calculatie_re_m->get_ticket_inkoopartikelens_disposables($where);
+			$data['lists'] = $this->calculatie_re_m->get_ticket_inkoopartikelens_disposables($where, $this->session->user_data['company_id']);
 		}
 		
-		$data['basic_eenhedens'] = $this->calculatie_re_m->get_list('basic_eenheden');
-		$data['basic_omzetgroepens'] = $this->calculatie_re_m->get_list('basic_omzetgroepen');
+		$data['basic_eenhedens'] = $this->calculatie_re_m->get_list_where('basic_eenheden', NULL);
+		$data['basic_omzetgroepens'] = $this->calculatie_re_m->get_list_where('basic_omzetgroepen', array('company_id'=>$this->session->user_data['company_id']));
 		
-		$data['basic_kleinstes'] = $this->calculatie_re_m->get_list('basic_kleinste');
-		$data['basic_eenheids'] = $this->calculatie_re_m->get_list('basic_eenheid');
-		$data['basic_locaties'] = $this->calculatie_re_m->get_list('basic_locatie');
-		$data['basic_btws'] = $this->calculatie_re_m->get_list('basic_btw');
+		$data['basic_kleinstes'] = $this->calculatie_re_m->get_list_where('basic_kleinste', NULL);
+		$data['basic_eenheids'] = $this->calculatie_re_m->get_list_where('basic_eenheid', array('company_id'=>$this->session->user_data['company_id']));
+		$data['basic_locaties'] = $this->calculatie_re_m->get_list_where('basic_locatie', array('company_id'=>$this->session->user_data['company_id']));
+		$data['basic_btws'] = $this->calculatie_re_m->get_list_where('basic_btw', array('company_id'=>$this->session->user_data['company_id']));
 
 		$this->load->view('header', $data);
 		$this->load->view('calculatie_recepten', $data);
@@ -63,7 +63,7 @@ class Calculatie_recepten extends MY_Controller {
 	}
 
 	public function get_leverancierslijst_info($id){
-		$item = $this->leverancierslijst_m->get_item_byId($id);
+		$item = $this->leverancierslijst_m->get_item_byId($id, $this->session->user_data['company_id']);
 		$this->generate_json($item);
 	}
 
@@ -111,6 +111,7 @@ class Calculatie_recepten extends MY_Controller {
 				if(!isset($item['id'])){
 					$item_info['created_at'] = date("Y-m-d H:i:s");
 				}
+				$item_info['company_id'] = $this->session->user_data['company_id'];
 				$this->calculatie_re_m->add_item('recepten_ticket_inkoopatikelen_disposable', $item_info);
 			}
 		}
@@ -124,6 +125,7 @@ class Calculatie_recepten extends MY_Controller {
 		$info['prijs_van'] = $req['total'];
 		$info['aantal_verpakkingen'] = $req['aantal_verpakkingen'];
 		$info['eenheid_id'] = $req['eenheid_id'];
+		$info['company_id'] = $this->session->user_data['company_id'];
 		
 		if($info['aantal_verpakkingen'] > 0)
 			$info['prijs_per'] = number_format($req['total'] / $req['aantal_verpakkingen'], 7);
@@ -153,6 +155,7 @@ class Calculatie_recepten extends MY_Controller {
 	public function create_ticket(){
 		$info['created_at'] = date("Y-m-d H:i:s");
 		$info['recept_id'] = $this->calculatie_re_m->get_max_receptId()['max_recepten_id'] + 1;
+		$info['company_id'] = $this->session->user_data['company_id'];
 		return $this->calculatie_re_m->add_item('recepten_ticket', $info);
 
 	}

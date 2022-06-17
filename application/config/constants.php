@@ -90,3 +90,7 @@ define('MAIL_USER', 'noreply@dhh.calculatie.restaurant');
 define('MAIL_PASS', 'Recpt123@#dhh.calc');
 // define('MAIL_PASS', 'Zy0N^6TR');
 define('MAIL_TO_MAIL', 'noreply@dhh.calculatie.restaurant');
+
+define('BASIC_COPY_TABLES', array('basic_bezorging', 'basic_btw', 'basic_eenheid', 'basic_inkoopcategorien', 'basic_leveranciernaam', 'basic_leveranciers', 'basic_locatie', 'basic_margegroepen', 'basic_omzetgroepen', 'basic_statiegeld', 'basic_verkoopgroepen'));
+
+define('COMPANY_INFO_TABLES', array('basic_bezorging', 'basic_btw', 'basic_eenheid', 'basic_inkoopcategorien', 'basic_leveranciernaam', 'basic_leveranciers', 'basic_locatie', 'basic_margegroepen', 'basic_omzetgroepen', 'basic_statiegeld', 'basic_verkoopgroepen', 'leverancierslijst', 'leverancierslijst_copy', 'recepten_ticket', 'recepten_ticket_inkoopatikelen_disposable', 'ticket', 'ticket_inkoopartikelens_disposables', 'voorraadteling_puchase', 'voorraadtelling'));

@@ -13,21 +13,20 @@ class Calculatie extends MY_Controller {
 	public function index() {
 		
 		$data['primary_menu'] = 'Calculatie Verkoopproducten';
-		
-		// $data['ticket'] = $this->calculatie_m->get_last_unsubmitted_ticket();
-		$data['leverancierslijsts'] = $this->leverancierslijst_m->get_list("");
+
+		$data['leverancierslijsts'] = $this->leverancierslijst_m->get_list_leve("", $this->session->user_data['company_id']);
 		// if($data['ticket']){
 		// 	$where['ticket_id'] = $data['ticket']['id'];
 		// 	$data['lists'] = $this->calculatie_m->get_ticket_inkoopartikelens_disposables($where);
 		// }
 
-		$data['basic_margegroepens'] = $this->calculatie_m->get_list('basic_margegroepen');
-		$data['basic_bezorgings'] = $this->calculatie_m->get_list('basic_bezorging');
-		$data['basic_btws'] = $this->calculatie_m->get_list('basic_btw');
-		$data['basic_omzetgroepens'] = $this->calculatie_m->get_list('basic_omzetgroepen');
-		$data['basic_inkoopcategoriens'] = $this->calculatie_m->get_list('basic_inkoopcategorien');
-		$data['basic_eenhedens'] = $this->calculatie_m->get_list('basic_eenheden');
-		$data['basic_kleinstes'] = $this->calculatie_m->get_list('basic_kleinste');
+		$data['basic_margegroepens'] = $this->calculatie_m->get_list_where('basic_margegroepen', array('company_id' => $this->session->user_data['company_id']));
+		$data['basic_bezorgings'] = $this->calculatie_m->get_list_where('basic_bezorging', array('company_id' => $this->session->user_data['company_id']));
+		$data['basic_btws'] = $this->calculatie_m->get_list_where('basic_btw', array('company_id' => $this->session->user_data['company_id']));
+		$data['basic_omzetgroepens'] = $this->calculatie_m->get_list_where('basic_omzetgroepen', array('company_id' => $this->session->user_data['company_id']));
+		$data['basic_inkoopcategoriens'] = $this->calculatie_m->get_list_where('basic_inkoopcategorien', array('company_id' => $this->session->user_data['company_id']));
+		$data['basic_eenhedens'] = $this->calculatie_m->get_list_where('basic_eenheden', NULL);
+		$data['basic_kleinstes'] = $this->calculatie_m->get_list_where('basic_kleinste', NULL);
 
 		$this->load->view('header', $data);
 		$this->load->view('calculatie', $data);
@@ -37,20 +36,20 @@ class Calculatie extends MY_Controller {
 	public function edit_ticket($ticket_id){
 		$data['primary_menu'] = 'Calculatie Verkoopproducten';
 		
-		$data['ticket'] = $this->calculatie_m->get_ticket($ticket_id);
-		$data['leverancierslijsts'] = $this->leverancierslijst_m->get_list("");
+		$data['ticket'] = $this->calculatie_m->get_ticket($ticket_id, $this->session->user_data['company_id']);
+		$data['leverancierslijsts'] = $this->leverancierslijst_m->get_list_leve("", $this->session->user_data['company_id']);
 		if($data['ticket']){
 			$where['ticket_id'] = $data['ticket']['id'];
-			$data['lists'] = $this->calculatie_m->get_ticket_inkoopartikelens_disposables($where);
+			$data['lists'] = $this->calculatie_m->get_ticket_inkoopartikelens_disposables($where, $this->session->user_data['company_id']);
 		}
 
-		$data['basic_margegroepens'] = $this->calculatie_m->get_list('basic_margegroepen');
-		$data['basic_bezorgings'] = $this->calculatie_m->get_list('basic_bezorging');
-		$data['basic_btws'] = $this->calculatie_m->get_list('basic_btw');
-		$data['basic_omzetgroepens'] = $this->calculatie_m->get_list('basic_omzetgroepen');
-		$data['basic_inkoopcategoriens'] = $this->calculatie_m->get_list('basic_inkoopcategorien');
-		$data['basic_eenhedens'] = $this->calculatie_m->get_list('basic_eenheden');
-		$data['basic_kleinstes'] = $this->calculatie_m->get_list('basic_kleinste');
+		$data['basic_margegroepens'] = $this->calculatie_m->get_list_where('basic_margegroepen', array('company_id' => $this->session->user_data['company_id']));
+		$data['basic_bezorgings'] = $this->calculatie_m->get_list_where('basic_bezorging', array('company_id' => $this->session->user_data['company_id']));
+		$data['basic_btws'] = $this->calculatie_m->get_list_where('basic_btw', array('company_id' => $this->session->user_data['company_id']));
+		$data['basic_omzetgroepens'] = $this->calculatie_m->get_list_where('basic_omzetgroepen', array('company_id' => $this->session->user_data['company_id']));
+		$data['basic_inkoopcategoriens'] = $this->calculatie_m->get_list_where('basic_inkoopcategorien', array('company_id' => $this->session->user_data['company_id']));
+		$data['basic_eenhedens'] = $this->calculatie_m->get_list_where('basic_eenheden', NULL);
+		$data['basic_kleinstes'] = $this->calculatie_m->get_list_where('basic_kleinste', NULL);
 
 		$this->load->view('header', $data);
 		$this->load->view('calculatie', $data);
@@ -77,7 +76,7 @@ class Calculatie extends MY_Controller {
 	}
 
 	public function get_leverancierslijst_info($id){
-		$item = $this->leverancierslijst_m->get_item_byId($id);
+		$item = $this->leverancierslijst_m->get_item_byId($id, $this->session->user_data['company_id']);
 		$this->generate_json($item);
 	}
 
@@ -104,6 +103,7 @@ class Calculatie extends MY_Controller {
 
 		$req['ticket_id'] = $ticket_id;
 		$req['created_at'] = date("Y-m-d H:i:s");
+		$req['company_id'] = $this->session->user_data['company_id'];
 		$this->calculatie_m->add_item('ticket_inkoopartikelens_disposables', $req);
 		$this->generate_json("Saved!");
 	}
@@ -125,6 +125,7 @@ class Calculatie extends MY_Controller {
 		$req['id'] = $ticket_id;
 		$req['submitted_at'] = date("Y-m-d H:i:s");
 		$req['is_calculated'] = '1';
+		$req['company_id'] = $this->session->user_data['company_id'];
 
 		$where['id'] = $ticket_id;
 		$this->calculatie_m->update_item('ticket', $req, $where);
@@ -146,6 +147,8 @@ class Calculatie extends MY_Controller {
 				if(!isset($item['id'])){
 					$info['created_at'] = date("Y-m-d H:i:s");
 				}
+				$info['company_id'] = $this->session->user_data['company_id'];
+				
 				$this->calculatie_m->add_item('ticket_inkoopartikelens_disposables', $info);
 			}
 		}
@@ -155,6 +158,7 @@ class Calculatie extends MY_Controller {
 
 	public function create_ticket(){
 		$info['created_at'] = date("Y-m-d H:i:s");
+		$info['company_id'] = $this->session->user_data['company_id'];
 		return $this->calculatie_m->add_item('ticket', $info);
 	}
 

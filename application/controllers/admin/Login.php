@@ -22,6 +22,8 @@ class Login extends CI_Controller {
 
 		$where['email'] = $email;
 		$where['user_pass'] = sha1($user_pass);
+		$where['role'] = '0';	//super admin role
+		
 		$info = $this->auth_m->get_member($where);
 		if(empty($info)){
 			echo "no";
@@ -38,39 +40,40 @@ class Login extends CI_Controller {
 	}
 
 
-	// public function update_password(){
-	// 	$req = $this->input->post();
-	// 	$where['id'] = $req['id'];
-	// 	$where['password'] = sha1($req['old_pass']);
-	// 	$info = $this->auth_m->get_member($where);
-	// 	if(empty($info)){
-	// 		echo "no";
-	// 		exit();
-	// 	}
+	public function update_password(){
+		$req = $this->input->post();
+		$where['id'] = $req['id'];
+		$where['user_pass'] = sha1($req['old_pass']);
+		$info = $this->auth_m->get_member($where);
+		if(empty($info)){
+			echo "no";
+			exit();
+		}
 		
-	// 	$update_where['id'] = $req['id'];
-	// 	$update_info['password'] = sha1($req['new_pass']);
-	// 	$this->auth_m->update_member($update_info, $update_where);
-	// 	echo 'yes';
-	// }
+		$update_where['id'] = $req['id'];
+		$update_info['user_pass'] = sha1($req['new_pass']);
+		$this->auth_m->update_member($update_info, $update_where);
+		echo 'yes';
+	}
 
-	// public function update_profile(){
-	// 	$req = $this->input->post();
-	// 	$where1 = "email = '" . strtolower($req['email']) . "' AND id != " . $this->session->admin_data['id'];
-	// 	$user_exist = $this->auth_m->get_member($where1);
-	// 	if($user_exist){
-	// 		echo 'no';
-	// 		return;
-	// 	}
+	public function update_profile(){
+		$req = $this->input->post();
+		$where1 = "email = '" . strtolower($req['email']) . "' AND id != " . $this->session->admin_data['id'];
+		$user_exist = $this->auth_m->get_member($where1);
+		if($user_exist){
+			echo 'no';
+			return;
+		}
 
-	// 	$where['id'] = $this->session->admin_data['id'];
-	// 	$update['email'] = strtolower($req['email']);
-	// 	$this->auth_m->update_member($update, $where);
+		$where['id'] = $this->session->admin_data['id'];
+		$update['email'] = strtolower($req['email']);
+		$update['user_name'] = "Super Admin";
+		$this->auth_m->update_member($update, $where);
 		
-	// 	$info = $this->auth_m->get_member($where);
-	// 	$info['is_loggedin'] = true;
-	// 	$this->session->set_userdata('admin_data', $info);
-	// 	echo 'yes';
-	// }
+		$info = $this->auth_m->get_member($where);
+		$info['is_loggedin'] = true;
+		$this->session->set_userdata('admin_data', $info);
+		echo 'yes';
+	}
 
 }

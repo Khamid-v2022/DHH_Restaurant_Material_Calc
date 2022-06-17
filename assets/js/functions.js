@@ -26,10 +26,6 @@ $(function() {
         columnDefs: [{
             width: '30px',
             targets: [0]
-        },{
-            orderable: false,
-            width: '150px',
-            targets: [2]
         }],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {

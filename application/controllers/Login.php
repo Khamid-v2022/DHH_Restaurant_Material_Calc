@@ -32,6 +32,7 @@ class Login extends CI_Controller {
 
 		$where['email'] = $email;
 		$where['user_pass'] = sha1($user_pass);
+
 		$info = $this->auth_m->get_member($where);
 		if(empty($info)){
 			echo "no";

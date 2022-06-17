@@ -20,13 +20,13 @@ class Cr_db extends MY_Controller {
 	}
 
 	public function get_list(){
-		$list = $this->calculatie_re_m->get_tickets();
+		$list = $this->calculatie_re_m->get_tickets($this->session->user_data['company_id']);
 		
 		$data = [];
 		$index = 0;
 
 		$leveranciernaam = '';
-		$leveranciernaam_list = $this->calculatie_re_m->get_list('basic_leveranciernaam');
+		$leveranciernaam_list = $this->calculatie_re_m->get_list_where('basic_leveranciernaam', array('company_id' => $this->session->user_data['company_id']));
 		if(count($leveranciernaam_list) > 0){
 			$leveranciernaam = $leveranciernaam_list[0]['name'];
 		}

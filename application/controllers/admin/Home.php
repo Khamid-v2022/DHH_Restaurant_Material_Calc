@@ -13,7 +13,7 @@ class Home extends Base_Controller {
 	{
 		$data['primary_menu'] = 'Home';
 		$this->load->view('admin/header', $data);
-		$this->load->view('home');
+		// $this->load->view('home');
 		$this->load->view('template/footer');
 	}
 }

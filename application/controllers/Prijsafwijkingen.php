@@ -19,8 +19,8 @@ class Prijsafwijkingen extends MY_Controller {
 	}
 
 	public function get_list(){
-		$list1 = $this->prijsafwijkingen_m->get_list_where("recepten_ticket", array("is_checked"=>"0"));
-		$list2 = $this->prijsafwijkingen_m->get_list_where("ticket", array("is_checked"=>"0"));
+		$list1 = $this->prijsafwijkingen_m->get_list_where("recepten_ticket", array("is_checked"=>"0", "company_id"=>$this->session->user_data['company_id']));
+		$list2 = $this->prijsafwijkingen_m->get_list_where("ticket", array("is_checked"=>"0", "company_id"=>$this->session->user_data['company_id']));
 		
 		$data = [];
 		$index = 0;

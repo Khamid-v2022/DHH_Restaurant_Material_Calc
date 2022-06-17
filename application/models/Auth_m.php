@@ -25,6 +25,12 @@ class Auth_m extends CI_Model
 		$this->db->where($where);
 		$this->db->update($this->table, $info);
 	}
+
+
+	public function get_max_companyId(){
+		$this->db->select('IFNULL(MAX(company_id), 0) AS max_company_id');
+		return $this->db->get('admin')->row_array();
+	}
 }
 
 ?>

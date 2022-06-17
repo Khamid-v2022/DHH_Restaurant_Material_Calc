@@ -4,14 +4,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Model extends CI_Model
 {
-	public function get_list($table_name, $order_by = null){
+	public function get_list($table_name, $order_by = NULL){
 		if($order_by)
 			$this->db->order_by($order_by);
 		return $this->db->get($table_name)->result_array();
 	}
 
-	public function get_list_where($table_name, $where){
-		$this->db->where($where);
+	public function get_list_where($table_name, $where = NULL, $order_by = NULL){
+		if($where)
+			$this->db->where($where);
+		if($order_by)
+			$this->db->order_by($order_by);
 		return $this->db->get($table_name)->result_array();
 	}
 

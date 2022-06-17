@@ -15,8 +15,8 @@ class Voorraadtelling extends MY_Controller {
 	public function index()
 	{
 		$data['primary_menu'] = 'Voorraadtelling';
-		$data['statiegelds'] = $this->function_m->get_list("basic_statiegeld", "statiegeld");
-		$data['locaties'] = $this->function_m->get_list("basic_locatie", "name");
+		$data['statiegelds'] = $this->function_m->get_list_where("basic_statiegeld", array("company_id"=>$this->session->user_data['company_id']), "statiegeld");
+		$data['locaties'] = $this->function_m->get_list_where("basic_locatie", array("company_id"=>$this->session->user_data['company_id']), "name");
 		
 		$this->load->view('header', $data);
 		$this->load->view('voorraadtelling', $data);
@@ -24,7 +24,7 @@ class Voorraadtelling extends MY_Controller {
 	}
 
 	public function get_list(){
-		$list = $this->voorraadtelling_m->get_list("voorraadtelling");
+		$list = $this->voorraadtelling_m->get_list_where("voorraadtelling", array("company_id"=>$this->session->user_data['company_id']));
 		
 		$data = [];
 		$index = 0;
@@ -58,6 +58,8 @@ class Voorraadtelling extends MY_Controller {
 		switch($req['action_type']){
 			case 'add':
 				$info['name'] = $req['name'];
+				$info['company_id'] = $this->session->user_data['company_id'];
+
 				$exist_item = $this->voorraadtelling_m->get_item('voorraadtelling', $info);
 				if($exist_item){
 					$this->generate_json("This value already exists", false);
@@ -66,7 +68,7 @@ class Voorraadtelling extends MY_Controller {
 
 				$added_id = $this->voorraadtelling_m->add_item('voorraadtelling', $info);
 				
-				$leve_list = $this->voorraadtelling_m->get_list("leverancierslijst");
+				$leve_list = $this->voorraadtelling_m->get_list_where("leverancierslijst", array("company_id" => $this->session->user_data['company_id']));
 				for($i = 0; $i < count($leve_list); $i++){
 					$leve_list[$i]['voorraadtelling_id'] = $added_id;
 					$leve_list[$i]['main_leverancierslijst_id'] = $leve_list[$i]['id'];
@@ -82,6 +84,7 @@ class Voorraadtelling extends MY_Controller {
 			case 'edit':
 				$where['id'] = $req['sel_id'];
 				$info['name'] = $req['name'];
+				$info['company_id'] = $this->session->user_data['company_id'];
 
 				$exist_item = $this->voorraadtelling_m->get_item('voorraadtelling', $info);
 				if($exist_item){
@@ -109,7 +112,7 @@ class Voorraadtelling extends MY_Controller {
 
 	public function excel($id){
 		$name = $this->voorraadtelling_m->get_item("voorraadtelling", array("id"=>$id))['name'];
-		$list = $this->voorraadtelling_m->get_list_join("", "geef_productnaam ASC", array('voorraadtelling_id'=>$id));
+		$list = $this->voorraadtelling_m->get_list_join("", "geef_productnaam ASC", array('voorraadtelling_id'=>$id), $this->session->user_data['company_id']);
 
         $object = new PHPExcel();
         $object->setActiveSheetIndex(0);
@@ -177,7 +180,7 @@ class Voorraadtelling extends MY_Controller {
 	public function view_sel_leverancierslijst($id){
 		$data['primary_menu'] = 'Edit Voorraadtelling';
 
-		$data['statiegelds'] = $this->function_m->get_list("basic_statiegeld", "statiegeld");
+		$data['statiegelds'] = $this->function_m->get_list_where("basic_statiegeld", array('company_id' => $this->session->user_data['company_id']), "statiegeld");
 		$data['sel_id'] = $id;
 		
 		$this->load->view('header', $data);
@@ -186,8 +189,7 @@ class Voorraadtelling extends MY_Controller {
 	}
 
 	public function get_leverancierslijst($id){
-		// $list = $this->voorraadtelling_m->get_list_join("", "geef_productnaam ASC", array('voorraadtelling_id'=>$id));
-		$list = $this->voorraadtelling_m->get_stock_list($id);
+		$list = $this->voorraadtelling_m->get_stock_list($id, $this->session->user_data['company_id']);
 		$data = [];
 		$index = 0;
 		
@@ -221,9 +223,8 @@ class Voorraadtelling extends MY_Controller {
 	}
 
 	public function get_leverancierslijst_by_locatie($voorraadtelling_id, $locatie_id){
-		// $list = $this->voorraadtelling_m->get_list_where("leverancierslijst_copy", array("voorraadtelling_id"=>$voorraadtelling_id, "locatie_id" => $locatie_id));
 
-		$list = $this->voorraadtelling_m->get_stock_list_by_location($voorraadtelling_id, $locatie_id);
+		$list = $this->voorraadtelling_m->get_stock_list_by_location($voorraadtelling_id, $locatie_id, $this->session->user_data['company_id']);
 
 		$data = [];
 		$index = 0;
@@ -259,17 +260,11 @@ class Voorraadtelling extends MY_Controller {
 		$this->generate_json($info);
 	}
 
-	// public function save_copy_stock(){
-	// 	$req = $this->input->post();
-		
-	// 	$where['id'] = $req['id'];
-	// 	$this->voorraadtelling_m->update_item('leverancierslijst_copy', $req, $where);
-	// 	$this->generate_json("");
-	// }
 
 	public function save_copy_stock(){
 		$req = $this->input->post();
 		$req['created_at'] = date("Y-m-d H:i:s");
+		$req['company_id'] = $this->session->user_data['company_id'];
 		$this->voorraadtelling_m->add_item('voorraadteling_puchase', $req);
 		$this->generate_json("");
 	}
@@ -282,8 +277,8 @@ class Voorraadtelling extends MY_Controller {
 
 		$data['product_info'] = $this->voorraadtelling_m->get_item('leverancierslijst_copy', array('id' => $id));
 		$data['sel_id'] = $id;
-		$data['statiegelds'] = $this->function_m->get_list("basic_statiegeld", "statiegeld");
-		$data['locaties'] = $this->function_m->get_list("basic_locatie", "name");
+		$data['statiegelds'] = $this->function_m->get_list_where("basic_statiegeld", array('company_id'=>$this->session->user_data['company_id']), "statiegeld");
+		$data['locaties'] = $this->function_m->get_list_where("basic_locatie", array('company_id'=>$this->session->user_data['company_id']), "name");
 		
 		$this->load->view('header', $data);
 		$this->load->view('stock_history', $data);
@@ -291,7 +286,7 @@ class Voorraadtelling extends MY_Controller {
 	}
 
 	public function get_stock_histories($leve_copy_id){
-		$list = $this->voorraadtelling_m->get_stock_histories($leve_copy_id);
+		$list = $this->voorraadtelling_m->get_stock_histories($leve_copy_id, $this->session->user_data['company_id']);
 
 		$data = [];
 		$index = 0;

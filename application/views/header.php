@@ -336,13 +336,16 @@
 										<span class="position-right">Prijsafwijkingen</span>
 									</a>
 								</li>
-								 
+								<?php 
+								if($this->session->user_data['role'] == '1'){
+								?>
 								<li class="dropdown <?php if($primary_menu == 'Users') echo 'active'?>">
 									<a href="<?=site_url()?>users">
 										<i class="icon-users"></i>
 										<span class="position-right">Users</span>
 									</a>
 								</li>
+								<?php } ?>
 							</ul>
 						</li>
 						<li class="<?php if($primary_menu == 'Voorraadtelling') echo 'active'?>">

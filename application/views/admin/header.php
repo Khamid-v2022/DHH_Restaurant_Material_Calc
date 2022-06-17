@@ -51,103 +51,89 @@
 			});
 		});
 
-		// function change_admin_password(id){
-		// 	var old_pass = $("#old_pass").val();
-		// 	var new_pass = $("#new_pass").val();
-		// 	var confirm_pass = $("#confirm_pass").val();
-		// 	if(!old_pass){
-		// 		swal({
-		// 			title: "Please enter the currenct password",
-		//             text: "",
-		//             type: "warning"}, function(){
-		//             	setTimeout(function(){
-		//             		$("#old_pass").focus();
-		//             	}, 100);
-		//             });
-		// 		return;
-		// 	}
+		function change_admin_password(id){
+			var old_pass = $("#old_pass").val();
+			var new_pass = $("#new_pass").val();
+			var confirm_pass = $("#confirm_pass").val();
+			if(!old_pass){
+				swal({
+					title: "Please enter the currenct password",
+		            text: "",
+		            type: "warning"}, function(){
+		            	setTimeout(function(){
+		            		$("#old_pass").focus();
+		            	}, 100);
+		            });
+				return;
+			}
 
-		// 	if(!new_pass || !confirm_pass || new_pass != confirm_pass){
-		// 		swal({
-		// 			title: "Please check the inputed value",
-		//             text: "",
-		//             type: "warning"});
-		// 		return;
-		// 	}
+			if(!new_pass || !confirm_pass || new_pass != confirm_pass){
+				swal({
+					title: "Please check the inputed value",
+		            text: "",
+		            type: "warning"});
+				return;
+			}
 
-		// 	$.post(SITE_URL + 'login/update_password', 
-		// 		{
-		// 			id: id,
-		// 			old_pass: old_pass,
-		// 			new_pass: new_pass
-		// 		}, 
-		// 		function(resp){
-		// 			if(resp=="yes"){
-		// 				swal({
-		// 					title: "Updated",
-		// 		            text: "",
-		// 		            type: "success"},function(){
-		// 		            	$('#change_password_modal').modal('toggle');
-		// 		        });
-		// 			}else{
-		// 				swal({
-		// 					title: "Please check your current password",
-		// 		            text: "",
-		// 		            type: "warning"});
-		// 				return;
-		// 			}
-		// 	});
-		// }
+			$.post(SITE_URL + 'admin/login/update_password', 
+				{
+					id: id,
+					old_pass: old_pass,
+					new_pass: new_pass
+				}, 
+				function(resp){
+					if(resp=="yes"){
+						swal({
+							title: "Updated",
+				            text: "",
+				            type: "success"},function(){
+				            	$('#change_password_modal').modal('toggle');
+				        });
+					}else{
+						swal({
+							title: "Please check your current password",
+				            text: "",
+				            type: "warning"});
+						return;
+					}
+			});
+		}
 
-		// function change_admin_profile(id){
-		// 	var name = $("#m_profile_name").val();
-		// 	if(name == ""){
-		// 		swal({
-		// 			title: "Please enter the user name",
-		//             text: "",
-		//             type: "error"}, function(){
-		//             	setTimeout(function(){
-		//             		$("#m_profile_name").focus();
-		//             	}, 100);
-		//             });
-		// 		return;
-		// 	}
+		function change_admin_profile(id){
+			var email = $("#m_email").val();
+			if(email == ""){
+				swal({
+					title: "Please enter the email",
+		            text: "",
+		            type: "error"}, function(){
+		            	setTimeout(function(){
+		            		$("#m_email").focus();
+		            	}, 100);
+		            });
+				return;
+			}
 
-		// 	var email = $("#m_email").val();
-		// 	if(email == ""){
-		// 		swal({
-		// 			title: "Please enter the email",
-		//             text: "",
-		//             type: "error"}, function(){
-		//             	setTimeout(function(){
-		//             		$("#m_email").focus();
-		//             	}, 100);
-		//             });
-		// 		return;
-		// 	}
-
-		// 	$.post(SITE_URL + 'login/update_profile', 
-		// 		{
-		// 			id: id,
-		// 			user_name: name,
-		// 			email: email
-		// 		}, 
-		// 		function(resp){
-		// 			if(resp=="yes"){
-		// 				swal({
-		// 					title: "Updated",
-		// 		            text: "",
-		// 		            type: "success"},function(){
-		// 		            	location.reload();
-		// 		        });
-		// 			}else if(resp=="no"){
-		// 				swal({
-		// 					title: "Please enter the another name",
-		// 		            text: "",
-		// 		            type: "error"});
-		// 			}
-		// 	});
-		// }
+			$.post(SITE_URL + 'admin/login/update_profile', 
+				{
+					id: id,
+					email: email
+				}, 
+				function(resp){
+					if(resp=="yes"){
+						swal({
+							title: "Updated",
+				            text: "",
+				            type: "success"},function(){
+				            	location.reload();
+				        });
+					}else if(resp=="no"){
+						swal({
+							title: "Please enter the another name",
+				            text: "",
+				            type: "error"});
+					}
+			});
+		}
 
 	</script>
 </head>
@@ -217,15 +203,6 @@
 				<form action="#" class="form-horizontal">
 					<div class="modal-body">
 						<div class="form-group has-feedback">
-							<label class="control-label col-sm-3">User name: </label>
-							<div class="col-sm-9">
-								<input type="text" placeholder="User name" class="form-control" id="m_profile_name" value="<?=$this->session->admin_data['user_name']?>" required>
-								<div class="form-control-feedback">
-									<i class="icon-user text-muted"></i>
-								</div>
-							</div>
-						</div>
-						<div class="form-group has-feedback">
 							<label class="control-label col-sm-3">Email: </label>
 							<div class="col-sm-9">
 								<input type="email" placeholder="Email" class="form-control" id="m_email" value="<?=$this->session->admin_data['email']?>" required>
@@ -268,10 +245,10 @@
 							</a>
 						</li>
 
-						<li class="<?php if($primary_menu == 'Users') echo 'active'?>">
-							<a href="<?=site_url()?>admin/users">
+						<li class="<?php if($primary_menu == 'Companies') echo 'active'?>">
+							<a href="<?=site_url()?>admin/companies">
 								<i class="icon-users"></i>
-								<span class="position-right">Users</span>
+								<span class="position-right">Companies</span>
 							</a>
 						</li>
 						
@@ -280,7 +257,7 @@
 				<ul class="nav navbar-nav navbar-right">						
 					<li class="dropdown dropdown-user">					
 						<a class="dropdown-toggle" data-toggle="dropdown">
-							<span style="font-size: 18px"><?=$this->session->admin_data['user_name']?></span>
+							<span style="font-size: 18px">Super Admin</span>
 							<i class="caret"></i>
 						</a>
 

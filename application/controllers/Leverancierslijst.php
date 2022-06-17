@@ -16,13 +16,13 @@ class Leverancierslijst extends MY_Controller {
 	public function index()
 	{
 		$data['primary_menu'] = 'Leverancierslijst';
-		$data['leveranciers'] = $this->function_m->get_list("basic_leveranciers", "name");
-		$data['locaties'] = $this->function_m->get_list("basic_locatie", "name");
-		$data['inkoopcategoriens'] = $this->function_m->get_list("basic_inkoopcategorien", "name");
-		$data['eenheids'] = $this->function_m->get_list("basic_eenheid", "name");
-		$data['eenhedens'] = $this->function_m->get_list("basic_eenheden", "name");
-		$data['kleinstes'] = $this->function_m->get_list("basic_kleinste", "name");
-		$data['statiegelds'] = $this->function_m->get_list("basic_statiegeld", "statiegeld");
+		$data['leveranciers'] = $this->function_m->get_list_where("basic_leveranciers", array('company_id' => $this->session->user_data['company_id']), "name");
+		$data['locaties'] = $this->function_m->get_list_where("basic_locatie", array('company_id' => $this->session->user_data['company_id']), "name");
+		$data['inkoopcategoriens'] = $this->function_m->get_list_where("basic_inkoopcategorien", array('company_id' => $this->session->user_data['company_id']), "name");
+		$data['eenheids'] = $this->function_m->get_list_where("basic_eenheid", array('company_id' => $this->session->user_data['company_id']), "name");
+		$data['eenhedens'] = $this->function_m->get_list_where("basic_eenheden", NULL, "name");
+		$data['kleinstes'] = $this->function_m->get_list_where("basic_kleinste", NULL, "name");
+		$data['statiegelds'] = $this->function_m->get_list_where("basic_statiegeld", array('company_id' => $this->session->user_data['company_id']), "statiegeld");
 		
 		$this->load->view('header', $data);
 		$this->load->view('leverancierslijst', $data);
@@ -30,7 +30,7 @@ class Leverancierslijst extends MY_Controller {
 	}
 
 	public function get_list(){
-		$list = $this->leverancierslijst_m->get_list("");
+		$list = $this->leverancierslijst_m->get_list_leve("", $this->session->user_data['company_id']);
 		
 		$data = [];
 		$index = 0;
@@ -62,7 +62,7 @@ class Leverancierslijst extends MY_Controller {
 
 	public function get_copy_info($id){
 		$item = $this->leverancierslijst_m->get_item('leverancierslijst', array('id'=>$id));
-		$item['artikelnummer'] = $this->calculatie_re_m->get_max_receptId()['max_recepten_id'] + 1;
+		$item['artikelnummer'] = $this->calculatie_re_m->get_max_receptId($this->session->user_data['company_id'])['max_recepten_id'] + 1;
 		$this->generate_json($item);
 	}
 
@@ -74,7 +74,7 @@ class Leverancierslijst extends MY_Controller {
 	public function get_initial_info(){
 		$req = $this->input->post();
 		$item = $this->leverancierslijst_m->get_item('basic_statiegeld', array('id'=>$req['id']));
-		$max_number = $this->calculatie_re_m->get_max_receptId()['max_recepten_id'] + 1;
+		$max_number = $this->calculatie_re_m->get_max_receptId($this->session->user_data['company_id'])['max_recepten_id'] + 1;
 		$this->generate_json(array('price'=>$item['price'], 'max_number'=>$max_number));
 	}
 
@@ -84,6 +84,7 @@ class Leverancierslijst extends MY_Controller {
 		if($req['action_type'] == 'add' || $req['action_type'] == 'copy'){
 			unset($req['action_type']);
 			unset($req['sel_id']);
+			$req['company_id'] = $this->session->user_data['company_id'];
 			$this->leverancierslijst_m->add_item('leverancierslijst', $req);
 			$this->generate_json("Added!");
 		} else if($req['action_type'] == 'edit'){
@@ -110,7 +111,7 @@ class Leverancierslijst extends MY_Controller {
 
 	private function update_product_price($old_info, $new_price_per, $changed_prijs_van_omdoos){
 
-		$products = $this->leverancierslijst_m->get_list_where('ticket_inkoopartikelens_disposables', array("leverancierslijst_id" => $old_info['id']));
+		$products = $this->leverancierslijst_m->get_list_where('ticket_inkoopartikelens_disposables', array("leverancierslijst_id" => $old_info['id'], 'company_id' => $this->session->user_data['company_id']));
 
 		foreach($products as $item){
 			$where['id'] = $item['id'];
@@ -120,7 +121,7 @@ class Leverancierslijst extends MY_Controller {
 			$this->leverancierslijst_m->update_item('ticket_inkoopartikelens_disposables', $update_info, $where);
 		}
 
-		$products_recepten =  $this->leverancierslijst_m->get_list_where('recepten_ticket_inkoopatikelen_disposable', array("leverancierslijst_id" => $old_info['id']));
+		$products_recepten =  $this->leverancierslijst_m->get_list_where('recepten_ticket_inkoopatikelen_disposable', array("leverancierslijst_id" => $old_info['id'], 'company_id' => $this->session->user_data['company_id']));
 		foreach($products_recepten as $item){
 			$where['id'] = $item['id'];
 			$update_info['eenheid_kleinste'] = $new_price_per;
@@ -135,13 +136,13 @@ class Leverancierslijst extends MY_Controller {
 		$changed_count = 0;
 		// VERKOOPPRODUCTEN
 		// get tickets to be updated
-		$ticket_ids = $this->calculatie_m->get_tickets_by_leverancierId($leverancierslijst_id);
+		$ticket_ids = $this->calculatie_m->get_tickets_by_leverancierId($leverancierslijst_id, $this->session->user_data['company_id']);
 		foreach($ticket_ids as $item){
 
-			$ticket_info = $this->calculatie_m->get_detailed_ticket_info($item['ticket_id']);
+			$ticket_info = $this->calculatie_m->get_detailed_ticket_info($item['ticket_id'], $this->session->user_data['company_id']);
 
-			$sub_total1 = $this->calculatie_m->get_subTotal($item['ticket_id'], "1")['sub_total'];
-			$sub_total2 = $this->calculatie_m->get_subTotal($item['ticket_id'], "2")['sub_total'];
+			$sub_total1 = $this->calculatie_m->get_subTotal($item['ticket_id'], "1", $this->session->user_data['company_id'])['sub_total'];
+			$sub_total2 = $this->calculatie_m->get_subTotal($item['ticket_id'], "2", $this->session->user_data['company_id'])['sub_total'];
 			$total = $sub_total1 + $sub_total2;
 
 			$new_advies_verkoopprijs = $ticket_info['marge1'] * $sub_total1 + $ticket_info['marge2'] * $sub_total2 * $ticket_info['bezorgfee'] * $ticket_info['btw_factor'];
@@ -165,13 +166,13 @@ class Leverancierslijst extends MY_Controller {
 
 
 		// RECEPTEN
-		$re_ticket_ids = $this->calculatie_re_m->get_tickets_by_leverancierId($leverancierslijst_id);
+		$re_ticket_ids = $this->calculatie_re_m->get_tickets_by_leverancierId($leverancierslijst_id, $this->session->user_data['company_id']);
 		foreach($re_ticket_ids as $item){
 
 			$re_ticket_info = $this->calculatie_re_m->get_item('recepten_ticket', array('id'=>$item['ticket_id']));
 
-			$sub_total1 = $this->calculatie_re_m->get_subTotal($item['ticket_id'], "1")['sub_total'];
-			$sub_total2 = $this->calculatie_re_m->get_subTotal($item['ticket_id'], "2")['sub_total'];
+			$sub_total1 = $this->calculatie_re_m->get_subTotal($item['ticket_id'], "1", $this->session->user_data['company_id'])['sub_total'];
+			$sub_total2 = $this->calculatie_re_m->get_subTotal($item['ticket_id'], "2", $this->session->user_data['company_id'])['sub_total'];
 			$new_total = $sub_total1 + $sub_total2;
 
 
@@ -202,7 +203,7 @@ class Leverancierslijst extends MY_Controller {
 
 	public function excel(){
 		$year = $this->input->post('m_year');
-		$list = $this->leverancierslijst_m->get_list("");
+		$list = $this->leverancierslijst_m->get_list_leve("", $this->session->user_data['company_id']);
 
         $object = new PHPExcel();
         $object->setActiveSheetIndex(0);
@@ -268,17 +269,17 @@ class Leverancierslijst extends MY_Controller {
 				$item['geef_productnaam'] = $worksheet->getCellByColumnAndRow(0, $row)->getValue();
 
 				$leveranciersnaam = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
-				$temp = $this->function_m->get_item("basic_leveranciers", array("name"=>$leveranciersnaam));
+				$temp = $this->function_m->get_item("basic_leveranciers", array("name"=>$leveranciersnaam, 'company_id'=>$this->session->user_data['company_id']));
 				if(!empty($temp))
 					$item['leveranciers_id'] = $temp['id'];
 
 				$locatie = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
-				$temp = $this->function_m->get_item("basic_locatie", array("name"=>$locatie));
+				$temp = $this->function_m->get_item("basic_locatie", array("name"=>$locatie, 'company_id'=>$this->session->user_data['company_id']));
 				if(!empty($temp))
 					$item['locatie_id'] = $temp['id'];
 
 				$inkoopcategorien = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-				$temp = $this->function_m->get_item("basic_inkoopcategorien", array("name"=>$inkoopcategorien));
+				$temp = $this->function_m->get_item("basic_inkoopcategorien", array("name"=>$inkoopcategorien, 'company_id'=>$this->session->user_data['company_id']));
 				if(!empty($temp))
 					$item['inkoopcategorien_id'] = $temp['id'];
 				
@@ -288,7 +289,7 @@ class Leverancierslijst extends MY_Controller {
 				$item['aantal_verpakkingen'] = $worksheet->getCellByColumnAndRow(6, $row)->getValue();
 
 				$eenheid = $worksheet->getCellByColumnAndRow(7, $row)->getValue();
-				$temp = $this->function_m->get_item("basic_eenheid", array("name"=>$eenheid));
+				$temp = $this->function_m->get_item("basic_eenheid", array("name"=>$eenheid, 'company_id'=>$this->session->user_data['company_id']));
 				if(!empty($temp)){
 					$item['eenheid_id'] = $temp['id'];
 				}				
@@ -310,7 +311,7 @@ class Leverancierslijst extends MY_Controller {
 				$item['netto_stuks_prijs'] = $worksheet->getCellByColumnAndRow(13, $row)->getValue();
 
 				$statiegeld = $worksheet->getCellByColumnAndRow(14, $row)->getValue();
-				$statiegeld_info = $this->function_m->get_item("basic_statiegeld", array("statiegeld"=>$statiegeld));
+				$statiegeld_info = $this->function_m->get_item("basic_statiegeld", array("statiegeld"=>$statiegeld, 'company_id'=>$this->session->user_data['company_id']));
 				if(!empty($statiegeld_info)){
 					$item['statiegeld_id'] = $statiegeld_info['id'];
 					$item['statiegeld_price'] = $statiegeld_info['price'];

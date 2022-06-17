@@ -20,7 +20,7 @@ class Cv extends MY_Controller {
 	}
 
 	public function get_list(){
-		$list = $this->calculatie_m->get_tickets();
+		$list = $this->calculatie_m->get_tickets($this->session->user_data['company_id']);
 		
 		$data = [];
 		$index = 0;
