@@ -10,8 +10,11 @@ $(function() {
         columnDefs: [{ 
             orderable: false,
             width: '200px',
-            targets: [ 3 ],
+            targets: [ 5 ],
             className: 'text-center', 
+        },{ 
+            targets: [ 4 ],
+            className: 'text-right', 
         }],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {
@@ -65,7 +68,7 @@ function add_user_modal(){
     $("#user_modal").modal();
 }
 
-function edit_user(user_name, email, company_name, id){
+function edit_user(user_name, email, company_name, phone_num, id){
     $(".action-type").html("Edit");
     $("#m_action_type").val("edit");
 
@@ -73,6 +76,7 @@ function edit_user(user_name, email, company_name, id){
     $("#m_user_name").val(user_name);
     $("#m_user_email").val(email);
     $("#m_company_name").val(company_name);
+    $("#m_phone_num").val(phone_num);
 
     $("#user_modal").modal();
 }
@@ -85,7 +89,8 @@ function save(){
             sel_id: $("#m_sel_id").val(),
             user_name: $("#m_user_name").val(),
             email: $("#m_user_email").val(),
-            company_name: $("#m_company_name").val()
+            company_name: $("#m_company_name").val(),
+            phone_num: $("#m_phone_num").val()
         }, 
         function(resp){
         resp = JSON.parse(resp)

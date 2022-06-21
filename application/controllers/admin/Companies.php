@@ -30,12 +30,12 @@ class Companies extends Base_Controller {
 	}
 
 	public function get_users(){
-		$list = $this->function_m->get_list_where('admin', array('role' => '1'));
+		$list = $this->auth_m->get_companies();
 	
 		$data = [];
 		
 		for($index = 0; $index < count($list); $index++){
-			$edit = "<button type='button' class='btn border-info text-info-600 btn-flat btn-icon' onclick='edit_user(\"" . $list[$index]['user_name'] . "\", \"" . $list[$index]['email'] . "\", \"" . $list[$index]['company_name'] . "\", " . $list[$index]['id'] . ")' title='edit'><i class='icon-pencil'></i></button>";
+			$edit = "<button type='button' class='btn border-info text-info-600 btn-flat btn-icon' onclick='edit_user(\"" . $list[$index]['user_name'] . "\", \"" . $list[$index]['email'] . "\", \"" . $list[$index]['company_name'] . "\", \"" . $list[$index]['phone_num'] . "\", " . $list[$index]['id'] . ")' title='edit'><i class='icon-pencil'></i></button>";
 			$bin = "<button type='button' class='btn border-warning text-warning-600 btn-flat btn-icon position-right' onclick='delete_user(" . $list[$index]['id'] . ")' title='delete'><i class='icon-bin'></i></button>";
 			$resset_pass = "<button type='button' class='btn border-success text-success btn-flat btn-icon position-right' onclick='reset_password(" . $list[$index]['id'] . ")' title='reset password'><i class='icon-unlocked2'></i></button>";
 
@@ -43,7 +43,7 @@ class Companies extends Base_Controller {
 				$role = "Admin";
 			else
 				$role = "User";
-			$array_item = array($list[$index]['company_name'], $list[$index]['user_name'], $list[$index]['email'], $role, $edit . $bin . $resset_pass);
+			$array_item = array($list[$index]['company_name'], $list[$index]['user_name'], $list[$index]['email'], $list[$index]['phone_num'], $list[$index]['count'], $edit . $bin . $resset_pass);
 
 			$data[] = $array_item;
 		}

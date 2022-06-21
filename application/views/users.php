@@ -59,13 +59,13 @@
 							<label>Email</label>
 							<input type="email" placeholder="Email" class="form-control" id="m_user_email" required>
 						</div>	
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label>Role</label>
 							<select class="form-control" id="m_user_role">
 								<option value="2" selected>User</option>
 								<option value="1">Admin</option>
 							</select>
-						</div>
+						</div> -->
 						<span class="help-block">Password will set to 123456 by default</span>	
 					</div>
 

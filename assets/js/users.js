@@ -72,7 +72,7 @@ function edit_user(user_name, email, role, id){
     $("#m_sel_id").val(id);
     $("#m_user_name").val(user_name);
     $("#m_user_email").val(email);
-    $("#m_user_role").val(role);
+    // $("#m_user_role").val(role);
 
     $("#user_modal").modal();
 }
@@ -85,7 +85,7 @@ function save(){
             sel_id: $("#m_sel_id").val(),
             user_name: $("#m_user_name").val(),
             email: $("#m_user_email").val(),
-            role: $("#m_user_role").val()
+            // role: $("#m_user_role").val()
         }, 
         function(resp){
         resp = JSON.parse(resp)

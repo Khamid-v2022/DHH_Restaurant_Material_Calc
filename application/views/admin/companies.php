@@ -26,8 +26,9 @@
 						<tr>
 							<th>Company Name</th>
 							<th>User Name</th>
-							<th>Login Email</th>
-							<th>Role</th>
+							<th>Email</th>
+							<th>Tel</th>
+							<th>Total Users</th>
 							<th>Action</th>
 						</tr>
 					</thead>
@@ -53,19 +54,22 @@
 				<form action="#" class="form-horizontal" id="m_form">
 					<div class="modal-body">
 						<div class="form-group">
-							<label>Company Name</label>
+							<label>Company Name*</label>
 							<input class="form-control" type="text" id="m_company_name" placeholder="Company name" required>
 						</div>
 						<div class="form-group">
-							<label>Profile Name</label>
+							<label>Profile Name*</label>
 							<input class="form-control" type="text" id="m_user_name" placeholder="User name" required>
 						</div>
 						<div class="form-group">
-							<label>Email</label>
+							<label>Email*</label>
 							<input type="email" placeholder="Email" class="form-control" id="m_user_email" required>
 						</div>	
-						
 						<span class="help-block">Password will set to Admin123456! by default</span>	
+						<div class="form-group">
+							<label>Tel</label>
+							<input class="form-control" type="text" id="m_phone_num" placeholder="Phone Number">
+						</div>
 					</div>
 
 					<div class="modal-footer">

@@ -27,6 +27,7 @@ class Login extends CI_Controller {
 	}
 
 	public function sign_in(){
+		// $this->test_email();
 		$email = strtolower($this->input->post('email'));
 		$user_pass = $this->input->post('user_pass');
 
@@ -145,6 +146,37 @@ class Login extends CI_Controller {
 		    $mail->isHTML(true);                                  
 		    $mail->Subject = "Please reset password!";
 		    $mail->Body    = "<p>Please log in with this password: <b>" . $password . "</b></p>";
+		    $mail->send();
+		    return true;
+		} catch (Exception $e) {
+			// return $mail->ErrorInfo;
+			return false;
+		}
+	}
+
+	private function test_email(){
+		$mail = new PHPMailer;
+
+		try {
+		    //Server settings
+		    $mail->isSMTP();
+		   
+		   	// $mail->SMTPDebug = 4;
+		    
+		    $mail->Host       = "smtp-relay.sendinblue.com";  
+		    $mail->SMTPAuth   = true;       
+		    $mail->Username   = 'director@sportential.com';    
+		    $mail->Password   = 'qpbgxCV5DE0QjBJA'; 
+		    $mail->CharSet =  "utf-8";
+		    $mail->SMTPSecure = 'tls';
+		    $mail->Port       = 587; 
+		    $mail->setFrom('director@sportential.com', 'Do not reply');
+ 
+		    $mail->addAddress("silverstar90216@gmail.com"); 
+		    
+		    $mail->isHTML(true);                                  
+		    $mail->Subject = "Please reset password!";
+		    $mail->Body    = "Hi this is test";
 		    $mail->send();
 		    return true;
 		} catch (Exception $e) {

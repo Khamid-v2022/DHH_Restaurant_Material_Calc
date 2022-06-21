@@ -41,7 +41,7 @@ class Users extends MY_Controller {
 	}
 
 	public function get_users(){
-		$list = $this->function_m->get_list_where('admin', array('company_id' => $this->session->user_data['company_id']));
+		$list = $this->function_m->get_list_where('admin', array('company_id' => $this->session->user_data['company_id'], 'role'=>'2'));
 	
 		$data = [];
 		
@@ -94,6 +94,7 @@ class Users extends MY_Controller {
 				$req['email'] = strtolower($req['email']);
 				$req['company_id'] = $this->session->user_data['company_id'];
 				$req['company_name'] = $this->session->user_data['company_name'];
+				$req['role'] = '2';
 				
 				$this->function_m->add_item('admin', $req);
 

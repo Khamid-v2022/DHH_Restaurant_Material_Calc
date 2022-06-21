@@ -31,6 +31,20 @@ class Auth_m extends CI_Model
 		$this->db->select('IFNULL(MAX(company_id), 0) AS max_company_id');
 		return $this->db->get('admin')->row_array();
 	}
+
+	public function get_companies(){
+		$query = "SELECT a.*, b.count 
+		FROM (
+			SELECT * 
+			FROM admin WHERE ROLE = '1') a 
+		LEFT JOIN (
+			SELECT company_id, COUNT(id) AS COUNT 
+			FROM admin WHERE ROLE != '0' 
+			GROUP BY company_id) b 
+		ON a.company_id = b.company_id";
+		$result = $this->db->query($query);
+		return $result->result_array();
+	}
 }
 
 ?>
