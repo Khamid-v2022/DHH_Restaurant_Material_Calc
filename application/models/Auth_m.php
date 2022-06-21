@@ -12,6 +12,12 @@ class Auth_m extends CI_Model
 		return $this->db->get($this->table)->row_array();
 	}
 
+	public function get_normal_member($where){
+		$this->db->where($where);
+		$this->db->where("role != '0'");
+		return $this->db->get($this->table)->row_array();
+	}
+
 	public function get_members(){
 		return $this->db->get($this->table)->result_array();
 	}

@@ -64,7 +64,7 @@
 							</div>
 						</div>
 
-						<button type="submit" class="btn bg-blue btn-block">Reset password <i class="icon-arrow-right14 position-right"></i></button>
+						<button type="submit" class="btn bg-blue btn-block" id="reset_password_btn">Reset password <i class="icon-arrow-right14 position-right reset-password-block"></i><i class="icon-spinner10 spinner position-left reset-password-open" style="display:none"></i></button>
 					</div>
 				</form>
 			</div>

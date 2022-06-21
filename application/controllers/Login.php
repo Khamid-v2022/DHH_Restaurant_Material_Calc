@@ -34,7 +34,7 @@ class Login extends CI_Controller {
 		$where['email'] = $email;
 		$where['user_pass'] = sha1($user_pass);
 
-		$info = $this->auth_m->get_member($where);
+		$info = $this->auth_m->get_normal_member($where);
 		if(empty($info)){
 			echo "no";
 			return;
@@ -90,7 +90,7 @@ class Login extends CI_Controller {
 		$email = strtolower($this->input->post('email'));
 
 		$where['email'] = $email;
-		$info = $this->auth_m->get_member($where);
+		$info = $this->auth_m->get_normal_member($where);
 		if(empty($info)){
 			echo "no";
 			return;
@@ -100,7 +100,9 @@ class Login extends CI_Controller {
 		
 		// reset password
 		$update_info['user_pass'] = sha1($new_password);
-		$this->auth_m->update_member($update_info, $where);
+
+		$where_update['id'] = $info['id'];
+		$this->auth_m->update_member($update_info, $where_update);
 
 		$result = $this->send_email($email, $new_password);
 		if($result){

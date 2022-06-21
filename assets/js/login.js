@@ -49,6 +49,9 @@ function login(){
 
 
 function submit_forgot(){
+	$("#reset_password_btn").attr("disabled", true);
+	$(".reset-password-block").css({"display":"none"});
+	$(".reset-password-open").css({"display":"inline-block"});
 	$.post(SITE_URL + 'login/forgot_password', 
 		{
 			email: $("#m_forgot_email").val()
@@ -80,5 +83,8 @@ function submit_forgot(){
                     $("#forgot_modal").modal('toggle');
                 });
 			}
+			$("#reset_password_btn").removeAttr("disabled");
+			$(".reset-password-block").css({"display":"inline-block"});
+			$(".reset-password-open").css({"display":"none"});
 	});
 }
