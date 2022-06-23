@@ -129,7 +129,7 @@ class Users extends MY_Controller {
 	public function format_password($id){
 		$info['user_pass'] = sha1("123456");
 		$this->function_m->update_item('admin', $info, array("id"=>$id));
-		$this->generate_json("The password has been reset to 123456.");
+		$this->generate_json("The password has been reset to 123456");
 	}
 
 	private function send_email($email){
@@ -147,7 +147,7 @@ class Users extends MY_Controller {
 		    $mail->Password   = MAIL_PASS; 
 		    $mail->CharSet =  "utf-8";
 		    $mail->SMTPSecure = 'tls';
-		    $mail->Port       = 587; 
+		    $mail->Port       = MAIL_PORT; 
 		    $mail->setFrom(MAIL_TO_MAIL, 'donotreply');
  
 		    $mail->addAddress($email); 

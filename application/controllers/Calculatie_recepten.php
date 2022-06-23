@@ -154,7 +154,7 @@ class Calculatie_recepten extends MY_Controller {
 
 	public function create_ticket(){
 		$info['created_at'] = date("Y-m-d H:i:s");
-		$info['recept_id'] = $this->calculatie_re_m->get_max_receptId()['max_recepten_id'] + 1;
+		$info['recept_id'] = $this->calculatie_re_m->get_max_receptId($this->session->user_data['company_id'])['max_recepten_id'] + 1;
 		$info['company_id'] = $this->session->user_data['company_id'];
 		return $this->calculatie_re_m->add_item('recepten_ticket', $info);
 

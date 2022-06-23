@@ -85,11 +85,21 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 // Email SMTP info
-define('MAIL_HOST', 'cl05.firemultimedia.eu');
-define('MAIL_USER', 'noreply@dhh.calculatie.restaurant');
-define('MAIL_PASS', 'Recpt123@#dhh.calc');
-// define('MAIL_PASS', 'Zy0N^6TR');
-define('MAIL_TO_MAIL', 'noreply@dhh.calculatie.restaurant');
+// define('MAIL_HOST', 'cl05.firemultimedia.eu');
+// define('MAIL_USER', 'noreply@dhh.calculatie.restaurant');
+// define('MAIL_PASS', 'Recpt123@#dhh.calc');
+// define('MAIL_TO_MAIL', 'noreply@dhh.calculatie.restaurant');
+
+
+// Email SMTP info
+define('MAIL_HOST', 'smtp-relay.sendinblue.com');
+define('MAIL_PORT', 587);
+define('MAIL_USER', 'p.krijnen@solvware.com');
+define('MAIL_PASS', '7DHzAZYjGgh31yEL');
+define('MAIL_TO_MAIL', 'p.krijnen@solvware.com');
+
+
+
 
 define('BASIC_COPY_TABLES', array('basic_bezorging', 'basic_btw', 'basic_eenheid', 'basic_inkoopcategorien', 'basic_leveranciernaam', 'basic_leveranciers', 'basic_locatie', 'basic_margegroepen', 'basic_omzetgroepen', 'basic_statiegeld', 'basic_verkoopgroepen'));
 

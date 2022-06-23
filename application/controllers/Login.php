@@ -27,7 +27,7 @@ class Login extends CI_Controller {
 	}
 
 	public function sign_in(){
-		// $this->test_email();
+		// echo $this->test_email1();
 		$email = strtolower($this->input->post('email'));
 		$user_pass = $this->input->post('user_pass');
 
@@ -98,14 +98,13 @@ class Login extends CI_Controller {
 
 		$new_password = $this->randomPassword();
 		
-		// reset password
-		$update_info['user_pass'] = sha1($new_password);
-
-		$where_update['id'] = $info['id'];
-		$this->auth_m->update_member($update_info, $where_update);
-
 		$result = $this->send_email($email, $new_password);
 		if($result){
+			// reset password
+			$update_info['user_pass'] = sha1($new_password);
+
+			$where_update['id'] = $info['id'];
+			$this->auth_m->update_member($update_info, $where_update);
 			echo 'ok';
 		}else{
 			echo 'failed';	
@@ -140,7 +139,7 @@ class Login extends CI_Controller {
 		    $mail->Password   = MAIL_PASS; 
 		    $mail->CharSet =  "utf-8";
 		    $mail->SMTPSecure = 'tls';
-		    $mail->Port       = 587; 
+		    $mail->Port       = MAIL_PORT; 
 		    $mail->setFrom(MAIL_TO_MAIL, 'Do not reply');
  
 		    $mail->addAddress($email); 
@@ -174,6 +173,38 @@ class Login extends CI_Controller {
 		    $mail->Port       = 587; 
 		    $mail->setFrom('director@sportential.com', 'Do not reply');
  
+		    $mail->addAddress("xianwon216@yahoo.com"); 
+		    
+		    $mail->isHTML(true);                                  
+		    $mail->Subject = "Please reset password!";
+		    $mail->Body    = "Hi this is test";
+		    $mail->send();
+		    return true;
+		} catch (Exception $e) {
+			return $mail->ErrorInfo;
+			// return false;
+		}
+	}
+
+
+	private function test_email1(){
+		$mail = new PHPMailer;
+
+		try {
+		    //Server settings
+		    $mail->isSMTP();
+		   
+		   	$mail->SMTPDebug = 4;
+		    
+		    $mail->Host       = MAIL_HOST;  
+		    $mail->SMTPAuth   = true;       
+		    $mail->Username   = MAIL_USER;    
+		    $mail->Password   = MAIL_PASS; 
+		    $mail->CharSet =  "utf-8";
+		    $mail->SMTPSecure = 'tls';
+		    $mail->Port       = MAIL_PORT; 
+		    $mail->setFrom(MAIL_TO_MAIL, 'Do not reply');
+ 
 		    $mail->addAddress("silverstar90216@gmail.com"); 
 		    
 		    $mail->isHTML(true);                                  
@@ -182,9 +213,8 @@ class Login extends CI_Controller {
 		    $mail->send();
 		    return true;
 		} catch (Exception $e) {
-			// return $mail->ErrorInfo;
-			return false;
+			return $mail->ErrorInfo;
+			// return false;
 		}
 	}
-
 }

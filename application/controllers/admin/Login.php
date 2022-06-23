@@ -99,14 +99,14 @@ class Login extends CI_Controller {
 
 		$new_password = $this->randomPassword();
 		
-		// reset password
-		$update_info['user_pass'] = sha1($new_password);
-
-		$where_update['id'] = $info['id'];
-		$this->auth_m->update_member($update_info, $where_update);
-
 		$result = $this->send_email($email, $new_password);
 		if($result){
+			// reset password
+			$update_info['user_pass'] = sha1($new_password);
+
+			$where_update['id'] = $info['id'];
+			$this->auth_m->update_member($update_info, $where_update);
+
 			echo 'ok';
 		}else{
 			echo 'failed';	
@@ -141,7 +141,7 @@ class Login extends CI_Controller {
 		    $mail->Password   = MAIL_PASS; 
 		    $mail->CharSet =  "utf-8";
 		    $mail->SMTPSecure = 'tls';
-		    $mail->Port       = 587; 
+		    $mail->Port       = MAIL_PORT; 
 		    $mail->setFrom(MAIL_TO_MAIL, 'Do not reply');
  
 		    $mail->addAddress($email); 
