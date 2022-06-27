@@ -84,20 +84,6 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
-// Email SMTP info
-// define('MAIL_HOST', 'cl05.firemultimedia.eu');
-// define('MAIL_USER', 'noreply@dhh.calculatie.restaurant');
-// define('MAIL_PASS', 'Recpt123@#dhh.calc');
-// define('MAIL_TO_MAIL', 'noreply@dhh.calculatie.restaurant');
-
-
-// Email SMTP info
-define('MAIL_HOST', 'smtp-relay.sendinblue.com');
-define('MAIL_PORT', 587);
-define('MAIL_USER', 'p.krijnen@solvware.com');
-define('MAIL_PASS', '7DHzAZYjGgh31yEL');
-define('MAIL_TO_MAIL', 'p.krijnen@solvware.com');
-
 
 
 

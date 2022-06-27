@@ -102,10 +102,10 @@ class Login extends CI_Controller {
 		$result = $this->send_email($email, $new_password);
 		if($result){
 			// reset password
-			$update_info['user_pass'] = sha1($new_password);
+			// $update_info['user_pass'] = sha1($new_password);
 
-			$where_update['id'] = $info['id'];
-			$this->auth_m->update_member($update_info, $where_update);
+			// $where_update['id'] = $info['id'];
+			// $this->auth_m->update_member($update_info, $where_update);
 
 			echo 'ok';
 		}else{
@@ -127,34 +127,35 @@ class Login extends CI_Controller {
 	}
 
 	private function send_email($email, $password){
-		$mail = new PHPMailer;
+		return true;
+		// $mail = new PHPMailer;
 
-		try {
-		    //Server settings
-		    $mail->isSMTP();
+		// try {
+		//     //Server settings
+		//     $mail->isSMTP();
 		   
-		   	// $mail->SMTPDebug = 4;
+		//    	// $mail->SMTPDebug = 4;
 		    
-		    $mail->Host       = MAIL_HOST;  
-		    $mail->SMTPAuth   = true;       
-		    $mail->Username   = MAIL_USER;    
-		    $mail->Password   = MAIL_PASS; 
-		    $mail->CharSet =  "utf-8";
-		    $mail->SMTPSecure = 'tls';
-		    $mail->Port       = MAIL_PORT; 
-		    $mail->setFrom(MAIL_TO_MAIL, 'Do not reply');
+		//     $mail->Host       = MAIL_HOST;  
+		//     $mail->SMTPAuth   = true;       
+		//     $mail->Username   = MAIL_USER;    
+		//     $mail->Password   = MAIL_PASS; 
+		//     $mail->CharSet =  "utf-8";
+		//     $mail->SMTPSecure = 'tls';
+		//     $mail->Port       = MAIL_PORT; 
+		//     $mail->setFrom(MAIL_TO_MAIL, 'Do not reply');
  
-		    $mail->addAddress($email); 
+		//     $mail->addAddress($email); 
 		    
-		    $mail->isHTML(true);                                  
-		    $mail->Subject = "Please reset password!";
-		    $mail->Body    = "<p>Please log in with this password: <b>" . $password . "</b></p>";
-		    $mail->send();
-		    return true;
-		} catch (Exception $e) {
-			// return $mail->ErrorInfo;
-			return false;
-		}
+		//     $mail->isHTML(true);                                  
+		//     $mail->Subject = "Please reset password!";
+		//     $mail->Body    = "<p>Please log in with this password: <b>" . $password . "</b></p>";
+		//     $mail->send();
+		//     return true;
+		// } catch (Exception $e) {
+		// 	// return $mail->ErrorInfo;
+		// 	return false;
+		// }
 	}
 
 }

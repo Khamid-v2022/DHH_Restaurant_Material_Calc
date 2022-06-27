@@ -99,7 +99,7 @@ class Users extends MY_Controller {
 				$this->function_m->add_item('admin', $req);
 
 				$this->generate_json("Saved");
-				$this->send_email($req['email']);
+				// $this->send_email($req['email']);
 				break;
 			case 'edit':
 				$where1 = "email = '" . strtolower($req['email']) . "' AND id != " . $req['sel_id'];
@@ -133,37 +133,38 @@ class Users extends MY_Controller {
 	}
 
 	private function send_email($email){
-		$mail = new PHPMailer;
+		return true;
+		// $mail = new PHPMailer;
 
-		try {
-		    //Server settings
-		    $mail->isSMTP();
+		// try {
+		//     //Server settings
+		//     $mail->isSMTP();
 		   
-		   	// $mail->SMTPDebug = 4;
+		//    	// $mail->SMTPDebug = 4;
 		    
-		    $mail->Host       = MAIL_HOST;  
-		    $mail->SMTPAuth   = true;       
-		    $mail->Username   = MAIL_USER;    
-		    $mail->Password   = MAIL_PASS; 
-		    $mail->CharSet =  "utf-8";
-		    $mail->SMTPSecure = 'tls';
-		    $mail->Port       = MAIL_PORT; 
-		    $mail->setFrom(MAIL_TO_MAIL, 'donotreply');
+		//     $mail->Host       = MAIL_HOST;  
+		//     $mail->SMTPAuth   = true;       
+		//     $mail->Username   = MAIL_USER;    
+		//     $mail->Password   = MAIL_PASS; 
+		//     $mail->CharSet =  "utf-8";
+		//     $mail->SMTPSecure = 'tls';
+		//     $mail->Port       = MAIL_PORT; 
+		//     $mail->setFrom(MAIL_TO_MAIL, 'donotreply');
  
-		    $mail->addAddress($email); 
+		//     $mail->addAddress($email); 
 		    
-		    $mail->isHTML(true);                                  
-		    $mail->Subject = "Welcome";
-		    $mail->Body    = "<p>Welcome to DHH</p>";
-		    $mail->Body    = "<p>Password: 123456</p>";
-		    $mail->Body    = "<p>Please login and reset password</p>";
-		    $mail->Body    .= "<a href='https://dhh.calculatie.restaurant/'>https://dhh.calculatie.restaurant/</a>";
-		    $mail->send();
-		    return true;
-		} catch (Exception $e) {
-			// return $mail->ErrorInfo;
-			return false;
-		}
+		//     $mail->isHTML(true);                                  
+		//     $mail->Subject = "Welcome";
+		//     $mail->Body    = "<p>Welcome to DHH</p>";
+		//     $mail->Body    = "<p>Password: 123456</p>";
+		//     $mail->Body    = "<p>Please login and reset password</p>";
+		//     $mail->Body    .= "<a href='https://dhh.calculatie.restaurant/'>https://dhh.calculatie.restaurant/</a>";
+		//     $mail->send();
+		//     return true;
+		// } catch (Exception $e) {
+		// 	// return $mail->ErrorInfo;
+		// 	return false;
+		// }
 	}
 
 }

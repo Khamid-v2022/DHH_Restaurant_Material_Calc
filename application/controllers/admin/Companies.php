@@ -88,7 +88,7 @@ class Companies extends Base_Controller {
 				$this->copy_basic_tables($req['company_id']);
 				
 				$this->generate_json("Saved");
-				$this->send_email($req['email']);
+				// $this->send_email($req['email']);
 				break;
 			case 'edit':
 				$where1 = "email = '" . strtolower($req['email']) . "' AND id != " . $req['sel_id'];
