@@ -40,7 +40,7 @@
 	}
 
 </style>
-
+<?=var_dump($ticket['margegroepen_id1'])?>
 <div class="page-container">
 	<div class="page-content">
 		<div class="content-wrapper">

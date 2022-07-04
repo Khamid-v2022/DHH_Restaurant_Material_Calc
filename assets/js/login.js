@@ -32,6 +32,7 @@ function login(){
 			user_pass: $("#user_pass").val()
 		}, 
 		function(resp) {
+			// console.log(resp);
 			if(resp == "yes"){
 				location.href = SITE_URL + 'home';
 				return;

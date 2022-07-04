@@ -27,7 +27,7 @@ class Login extends CI_Controller {
 	}
 
 	public function sign_in(){
-		// echo $this->test_email1();
+		// echo $this->test_email();
 		$email = strtolower($this->input->post('email'));
 		$user_pass = $this->input->post('user_pass');
 
@@ -101,10 +101,10 @@ class Login extends CI_Controller {
 		$result = $this->send_email($email, $new_password);
 		if($result){
 			// reset password
-			// $update_info['user_pass'] = sha1($new_password);
+			$update_info['user_pass'] = sha1($new_password);
 
-			// $where_update['id'] = $info['id'];
-			// $this->auth_m->update_member($update_info, $where_update);
+			$where_update['id'] = $info['id'];
+			$this->auth_m->update_member($update_info, $where_update);
 			echo 'ok';
 		}else{
 			echo 'failed';	
@@ -125,35 +125,35 @@ class Login extends CI_Controller {
 	}
 
 	private function send_email($email, $password){
-		return true;
-		// $mail = new PHPMailer;
+		// return true;
+		$mail = new PHPMailer;
 
-		// try {
-		//     //Server settings
-		//     $mail->isSMTP();
+		try {
+		    //Server settings
+		    $mail->isSMTP();
 		   
-		//    	// $mail->SMTPDebug = 4;
+		   	// $mail->SMTPDebug = 4;
 		    
-		//     $mail->Host       = MAIL_HOST;  
-		//     $mail->SMTPAuth   = true;       
-		//     $mail->Username   = MAIL_USER;    
-		//     $mail->Password   = MAIL_PASS; 
-		//     $mail->CharSet =  "utf-8";
-		//     $mail->SMTPSecure = 'tls';
-		//     $mail->Port       = MAIL_PORT; 
-		//     $mail->setFrom(MAIL_TO_MAIL, 'Do not reply');
+		    $mail->Host       = MAIL_HOST;  
+		    $mail->SMTPAuth   = true;       
+		    $mail->Username   = MAIL_USER;    
+		    $mail->Password   = MAIL_PASS; 
+		    $mail->CharSet =  "utf-8";
+		    $mail->SMTPSecure = 'tls';
+		    $mail->Port       = MAIL_PORT; 
+		    $mail->setFrom(MAIL_TO_MAIL, MAIL_TO_NAME);
  
-		//     $mail->addAddress($email); 
+		    $mail->addAddress($email); 
 		    
-		//     $mail->isHTML(true);                                  
-		//     $mail->Subject = "Please reset password!";
-		//     $mail->Body    = "<p>Please log in with this password: <b>" . $password . "</b></p>";
-		//     $mail->send();
-		//     return true;
-		// } catch (Exception $e) {
-		// 	// return $mail->ErrorInfo;
-		// 	return false;
-		// }
+		    $mail->isHTML(true);                                  
+		    $mail->Subject = "Please reset password!";
+		    $mail->Body    = "<p>Please log in with this password: <b>" . $password . "</b></p>";
+		    $mail->send();
+		    return true;
+		} catch (Exception $e) {
+			// return $mail->ErrorInfo;
+			return false;
+		}
 	}
 
 	private function test_email(){
@@ -163,18 +163,18 @@ class Login extends CI_Controller {
 		    //Server settings
 		    $mail->isSMTP();
 		   
-		   	// $mail->SMTPDebug = 4;
+		   	$mail->SMTPDebug = 4;
 		    
-		    $mail->Host       = "smtp-relay.sendinblue.com";  
+		    $mail->Host       = "smtp.postmarkapp.com";  
 		    $mail->SMTPAuth   = true;       
-		    $mail->Username   = 'director@sportential.com';    
-		    $mail->Password   = 'qpbgxCV5DE0QjBJA'; 
+		    $mail->Username   = '440cb398-0ebc-4419-81b2-74acf4975281';    
+		    $mail->Password   = '440cb398-0ebc-4419-81b2-74acf4975281'; 
 		    $mail->CharSet =  "utf-8";
 		    $mail->SMTPSecure = 'tls';
 		    $mail->Port       = 587; 
 		    $mail->setFrom('director@sportential.com', 'Do not reply');
  
-		    $mail->addAddress("xianwon216@yahoo.com"); 
+		    $mail->addAddress("silverstar90216@gmail.com"); 
 		    
 		    $mail->isHTML(true);                                  
 		    $mail->Subject = "Please reset password!";
