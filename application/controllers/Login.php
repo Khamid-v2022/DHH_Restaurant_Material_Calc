@@ -138,7 +138,7 @@ class Login extends CI_Controller {
 		    $mail->SMTPAuth   = true;       
 		    $mail->Username   = MAIL_USER;    
 		    $mail->Password   = MAIL_PASS; 
-		    $mail->CharSet =  "utf-8";
+		    $mail->CharSet 	  = 'utf-8';
 		    $mail->SMTPSecure = 'tls';
 		    $mail->Port       = MAIL_PORT; 
 		    $mail->setFrom(MAIL_TO_MAIL, MAIL_TO_NAME);
@@ -153,69 +153,6 @@ class Login extends CI_Controller {
 		} catch (Exception $e) {
 			// return $mail->ErrorInfo;
 			return false;
-		}
-	}
-
-	private function test_email(){
-		$mail = new PHPMailer;
-
-		try {
-		    //Server settings
-		    $mail->isSMTP();
-		   
-		   	$mail->SMTPDebug = 4;
-		    
-		    $mail->Host       = "smtp.postmarkapp.com";  
-		    $mail->SMTPAuth   = true;       
-		    $mail->Username   = '440cb398-0ebc-4419-81b2-74acf4975281';    
-		    $mail->Password   = '440cb398-0ebc-4419-81b2-74acf4975281'; 
-		    $mail->CharSet =  "utf-8";
-		    $mail->SMTPSecure = 'tls';
-		    $mail->Port       = 587; 
-		    $mail->setFrom('director@sportential.com', 'Do not reply');
- 
-		    $mail->addAddress("silverstar90216@gmail.com"); 
-		    
-		    $mail->isHTML(true);                                  
-		    $mail->Subject = "Please reset password!";
-		    $mail->Body    = "Hi this is test";
-		    $mail->send();
-		    return true;
-		} catch (Exception $e) {
-			return $mail->ErrorInfo;
-			// return false;
-		}
-	}
-
-
-	private function test_email1(){
-		$mail = new PHPMailer;
-
-		try {
-		    //Server settings
-		    $mail->isSMTP();
-		   
-		   	$mail->SMTPDebug = 4;
-		    
-		    $mail->Host       = MAIL_HOST;  
-		    $mail->SMTPAuth   = true;       
-		    $mail->Username   = MAIL_USER;    
-		    $mail->Password   = MAIL_PASS; 
-		    $mail->CharSet =  "utf-8";
-		    $mail->SMTPSecure = 'tls';
-		    $mail->Port       = MAIL_PORT; 
-		    $mail->setFrom(MAIL_TO_MAIL, 'Do not reply');
- 
-		    $mail->addAddress("silverstar90216@gmail.com"); 
-		    
-		    $mail->isHTML(true);                                  
-		    $mail->Subject = "Please reset password!";
-		    $mail->Body    = "Hi this is test";
-		    $mail->send();
-		    return true;
-		} catch (Exception $e) {
-			return $mail->ErrorInfo;
-			// return false;
 		}
 	}
 }

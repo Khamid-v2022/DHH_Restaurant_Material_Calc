@@ -58,7 +58,7 @@ function submit_forgot(){
 			email: $("#m_forgot_email").val()
 		}, 
 		function(resp) {
-			// console.log(resp);
+			console.log(resp);
 			if(resp == 'no'){
 				swal({
                     title: "You are not our member!",
