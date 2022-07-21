@@ -12,7 +12,7 @@ $(function() {
         }, 
         { 
             className: 'text-right', 
-            targets: [5, 7, 8, 9, 10] 
+            targets: [4, 6, 7, 8, 9] 
         }],
         order: [[ 1, "asc" ]],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',

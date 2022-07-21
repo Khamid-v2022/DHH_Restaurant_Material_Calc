@@ -161,6 +161,7 @@ function change_statiegeld(){
 }
 
 function set_initial_info(){
+    $("#m_prijs_van").val(1).trigger('change');
     const id = $("#m_statiegeld_id").val();
     $.post(SITE_URL + 'leverancierslijst/get_initial_info', 
         {

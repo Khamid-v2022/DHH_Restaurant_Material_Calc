@@ -41,7 +41,25 @@ class Leverancierslijst extends MY_Controller {
 			$copy = "<button type='button' class='btn border-primary text-primary btn-flat btn-icon' onclick='copy_info(" . $list[$index]['id'] . ")' title='copy'><i class='icon-copy3'></i></button>";
 			$bin = "<button type='button' class='btn border-warning text-warning-600 btn-flat btn-icon' onclick='delete_info(" . $list[$index]['id'] . ")' title='delete'><i class='icon-bin'></i></button>";
 
-			$array_item = array($edit . $copy . $bin, $list[$index]['geef_productnaam'], $list[$index]['leveranciers'],  $list[$index]['locatie'],  $list[$index]['inkoopcategorien'],  $list[$index]['artikelnummer'],  '€  ' . number_format($list[$index]['prijs_van'], 7, ',', '.'),  $list[$index]['aantal_verpakkingen'],  $list[$index]['eenheid'],  '€  ' . number_format($list[$index]['prijs_per'], 7, ',', '.'),  $list[$index]['inhoud_van'],  $list[$index]['eenheden'],  '€  ' . number_format($list[$index]['prijs_per_eenheid'], 7, ',', '.'),  $list[$index]['kleinste'],  $list[$index]['netto_stuks_prijs'],  $list[$index]['verpakking'], $list[$index]['statiegeld']==0 ? '-' : '€  ' . number_format($list[$index]['statiegeld'], 2, ',', '.'));
+			$array_item = array(
+				$edit . $copy . $bin, 
+				$list[$index]['geef_productnaam'], 
+				$list[$index]['leveranciers'], 
+				$list[$index]['locatie'], 
+				$list[$index]['inkoopcategorien'], 
+				$list[$index]['artikelnummer'], 
+				'€  ' . number_format($list[$index]['prijs_van'], 2, ',', '.'), 
+				$list[$index]['aantal_verpakkingen'], 
+				$list[$index]['eenheid'], 
+				'€  ' . number_format($list[$index]['prijs_per'], 2, ',', '.'), 
+				$list[$index]['inhoud_van'], 
+				$list[$index]['eenheden'], 
+				'€  ' . number_format($list[$index]['prijs_per_eenheid'], 7, ',', '.'), 
+				$list[$index]['kleinste'], 
+				number_format($list[$index]['netto_stuks_prijs'], 2), 
+				$list[$index]['verpakking'], 
+				$list[$index]['statiegeld']==0 ? '-' : '€  ' . number_format($list[$index]['statiegeld'], 2, ',', '.')
+			);
 			$data[] = $array_item;
 		}
 

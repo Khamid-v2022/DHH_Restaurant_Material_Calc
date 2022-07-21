@@ -101,7 +101,11 @@ var reload_table = function(){
         columnDefs: [{
             width: 200,
             targets: [ 1 ]
+        },{ 
+            className: 'text-right',
+            targets: [ 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17 ]
         }],
+
     });
 
     // Add placeholder to the datatable filter option

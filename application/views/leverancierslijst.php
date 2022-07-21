@@ -199,6 +199,16 @@
 									<input type="number" placeholder="Statiegeld" class="form-control" step="any" readonly id="m_statiegeld_price">
 								</div>
 								<div class="col-sm-3">
+									<label>Statiegeld omdoos</label>
+									<select class="select-search" onchange="" id="m_statiegeld_omdoos_id">
+										<?php 
+										foreach($statiegelds as $item){
+											echo '<option value="' . $item['id'] . '">' . $item['statiegeld'] . '</option>';
+										}
+										?>
+									</select>
+								</div>
+								<div class="col-sm-3">
 									<label>Statiegeld verpakking</label>
 									<select class="select-search" onchange="change_statiegeld()" id="m_statiegeld_id">
 										<?php 

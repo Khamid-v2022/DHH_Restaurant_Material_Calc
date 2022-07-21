@@ -136,39 +136,6 @@ var topScroll = function(){
     });
 }
 
-// var stock_modal = function(id){
-//     $("#m_s_sel_id").val(id);
-//     $.post(SITE_URL + 'voorraadtelling/get_copy_info/' + id, function(resp){
-//         resp = JSON.parse(resp);
-//         if(resp.status){
-//             let info = resp.msg;
-//             // from leveran.. table
-//             $("#m_statiegeld_omdoos").val(info.statiegeld_id).trigger("change");
-//             $("#m_statiegeld_eenheid").val(info.statiegeld_price);
-
-//             // new fields
-//             $("#m_statiegeld_los").val(info.statiegeld_los).trigger("change");
-//             $("#m_statiegeld_eenheid2").val(info.statiegeld_eenheid2);
-//             $("#m_aantal_omdozen").val(info.aantal_omdozen);
-//             $("#m_lege_omdozen").val(info.lege_omdozen).trigger("change");
-//             $("#m_omdoos_statie_totaal").val(info.omdoos_statiegeld_totaal).trigger("change");
-//             $("#m_losse_geteld").val(info.losse_geteld);
-//             $("#m_lege_geteld").val(info.lege_geteld).trigger("change");
-            
-//             // from leveran.. table
-//             $("#m_inhoud_verpakking").val(info.inhoud_van);
-//             $("#m_prijs_omdoos").val(info.prijs_van);
-//             $("#m_prijs_kleinste_eenheid").val(info.prijs_per_eenheid).trigger("change");
-            
-//             // new fields
-//             $("#m_statie_losse_flessen").val(info.statiegeld_losse_flessen).trigger("change");
-//         }
-//     })
-    
-
-//     $("#voorraadtelling_modal").modal();
-// }
-
 var stock_modal = function(id){
     $("#m_s_sel_id").val(id);
     $.post(SITE_URL + 'voorraadtelling/get_copy_info/' + id, function(resp){

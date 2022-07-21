@@ -44,7 +44,6 @@
 						<tr>
 							<th>Actie</th>
 							<th>Naam</th>
-							<th>Leveranciersnaam</th>
 							<th>Inkoopcategorie</th>
 							<th>Eenheid verpakking</th>
 							<th>Verkoopprijs ex btw</th>

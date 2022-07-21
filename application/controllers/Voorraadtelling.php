@@ -194,21 +194,43 @@ class Voorraadtelling extends MY_Controller {
 		$index = 0;
 		
 		for($index = 0; $index < count($list); $index++){
-			// if($list[$index]['aantal_geteld'] > 0 && $list[$index]['statiegeld']){
-			// 	$statiegeld = number_format($list[$index]['aantal_geteld'] * $list[$index]['statiegeld'], 7);
-			// }
 
 			$stock = "<button type='button' class='btn border-success text-success btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
 			
-			$additional_stock = "<button type='button' class='btn border-info text-info btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
+			$additional_stock = "<button type='button' class='btn border-info text-info btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title=''><i class='icon-calendar2'></i></button>";
+			
 			$actions = $stock;
+
 			if($list[$index]['num'] > 0){
-				$actions = $stock . $additional_stock;
+				$actions = $additional_stock;
 			}
 
 			$link = "<a href='" . site_url() . "voorraadtelling/view_stock_history/" . $list[$index]['id'] . "' target='_black'>" . $list[$index]['geef_productnaam'] . "</a>";
 
-			$array_item = array($actions, $link, $list[$index]['leveranciers'],  $list[$index]['locatie'],  $list[$index]['inkoopcategorien'],  $list[$index]['artikelnummer'],  '€  ' . number_format($list[$index]['prijs_van'], 7, ',', '.'),  $list[$index]['aantal_verpakkingen'],  $list[$index]['eenheid'],  '€  ' . number_format($list[$index]['prijs_per'], 7, ',', '.'),  $list[$index]['inhoud_van'],  $list[$index]['eenheden'],  '€  ' . number_format($list[$index]['prijs_per_eenheid'], 7, ',', '.'),  $list[$index]['kleinste'],  $list[$index]['netto_stuks_prijs'],  $list[$index]['verpakking'], $list[$index]['statiegeld']==0 ? '-' : '€  ' . number_format($list[$index]['statiegeld'], 2, ',', '.'), $list[$index]['waarde_voorraad'], $list[$index]['waarde_voorraad2'], $list[$index]['waard_statiegeld'], $list[$index]['aantal_omdozen'], $list[$index]['aantal_geteld']);
+			$array_item = array(
+				$actions, 
+				$link, 
+				$list[$index]['leveranciers'],  
+				$list[$index]['locatie'], 
+				$list[$index]['inkoopcategorien'], 
+				$list[$index]['artikelnummer'],  
+				'€  ' . number_format($list[$index]['prijs_van'], 2, ',', '.'),  
+				$list[$index]['aantal_verpakkingen'],  
+				$list[$index]['eenheid'],  
+				'€  ' . number_format($list[$index]['prijs_per'], 2, ',', '.'),  
+				$list[$index]['inhoud_van'],  
+				$list[$index]['eenheden'],  
+				'€  ' . number_format($list[$index]['prijs_per_eenheid'], 7, ',', '.'),  
+				$list[$index]['kleinste'],  
+				number_format($list[$index]['netto_stuks_prijs'], 2),
+				$list[$index]['verpakking'], 
+				$list[$index]['statiegeld']==0 ? '-' : '€  ' . number_format($list[$index]['statiegeld'], 2, ',', '.'), 
+				$list[$index]['waarde_voorraad'], 
+				number_format($list[$index]['waarde_voorraad2'], 2),
+				$list[$index]['waard_statiegeld'], 
+				$list[$index]['aantal_omdozen'], 
+				$list[$index]['aantal_geteld']
+			);
 			$data[] = $array_item;
 		}
 
@@ -236,7 +258,7 @@ class Voorraadtelling extends MY_Controller {
 			$additional_stock = "<button type='button' class='btn border-info text-info btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
 			$actions = $stock;
 			if($list[$index]['num'] > 0){
-				$actions = $stock . $additional_stock;
+				$actions = $additional_stock;
 			}
 
 			$link = "<a href='" . site_url() . "voorraadtelling/view_stock_history/" . $list[$index]['id'] . "' target='_black'>" . $list[$index]['geef_productnaam'] . "</a>";
@@ -296,7 +318,26 @@ class Voorraadtelling extends MY_Controller {
 			$item = $list[$index];
 			$bin = "<button type='button' class='btn border-warning text-warning-600 btn-flat btn-icon' onclick='delete_item(" . $item['id'] . ")' title='delete'><i class='icon-bin'></i></button>";
 
-			$array_item = array($bin, $item['created_at'], $item['inhoud_van'], $item['prijs_van'], $item['statiegeld'], $item['statiegeld_price'], $item['aantal_omdozen'], $item['lege_omdozen'], $item['omdoos_statiegeld_totaal'], $item['statiegeld2'], $item['statiegeld_eenheid2'], $item['losse_geteld'], $item['lege_geteld'], $item['statiegeld_losse_flessen'], $item['prijs_per_eenheid'], $item['waard_statiegeld'], $item['waarde_voorraad'], $item['waarde_voorraad2']);
+			$array_item = array(
+				$bin, 
+				$item['created_at'], 
+				$item['inhoud_van'], 
+				number_format($item['prijs_van'], 2),
+				$item['statiegeld'], 
+				number_format($item['statiegeld_price'], 2), 
+				$item['aantal_omdozen'], 
+				$item['lege_omdozen'], 
+				number_format($item['omdoos_statiegeld_totaal'], 2),
+				$item['statiegeld2'], 
+				number_format($item['statiegeld_eenheid2'], 2),
+				number_format($item['losse_geteld'], 2),
+				number_format($item['lege_geteld'], 2),
+				number_format($item['statiegeld_losse_flessen'], 2),
+				number_format($item['prijs_per_eenheid'], 2),
+				number_format($item['waard_statiegeld'], 2),
+				number_format($item['waarde_voorraad'], 2),
+				number_format($item['waarde_voorraad2'], 2)
+			);
 			$data[] = $array_item;
 		}
 
