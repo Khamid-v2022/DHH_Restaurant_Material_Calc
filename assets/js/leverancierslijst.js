@@ -8,6 +8,7 @@ $(function() {
         $("#m_inkoopcategorien_id").trigger('change');
         $("#m_eenheid_id").trigger('change');
         $("#m_eenheden_id").trigger('change');
+        $("#m_statiegeld_omdoos_id").trigger('change');
         $("#m_statiegeld_id").trigger('change');
 	});
     $('#modal_download').on('hidden.bs.modal', function() {
@@ -26,7 +27,7 @@ $(function() {
         }, 
         { 
             className: 'text-right', 
-            targets: [5, 6, 7, 9, 10, 12, 14, 16] 
+            targets: [5, 6, 7, 9, 10, 12, 14, 17] 
         }],
         order: [[ 1, "asc" ]],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
@@ -97,9 +98,7 @@ $(function() {
         })
     })
     $("#m_eenheden_id").trigger('change');
-
-
-    
+ 
 });
 
 var reload_table = function(){
@@ -199,6 +198,7 @@ var edit_info = function(id){
             $("#m_prijs_per_eenheid").val(item.prijs_per_eenheid);
             $("#m_kleinste_eenheid_id").val(item.kleinste_eenheid_id).trigger('change');
             // $("#m_netto_stuks_prijs").val(item.netto_stuks_prijs);
+            $("#m_statiegeld_omdoos_id").val(item.statiegeld_omdoos_id).trigger('change');
             $("#m_statiegeld_id").val(item.statiegeld_id).trigger('change');
             $("#m_statiegeld_price").val(item.statiegeld_price);
 
@@ -229,6 +229,7 @@ var copy_info = function(id){
             $("#m_prijs_per_eenheid").val(item.prijs_per_eenheid);
             $("#m_kleinste_eenheid_id").val(item.kleinste_eenheid_id).trigger('change');
             // $("#m_netto_stuks_prijs").val(item.netto_stuks_prijs);
+            $("#m_statiegeld_omdoos_id").val(item.statiegeld_omdoos_id).trigger('change');
             $("#m_statiegeld_id").val(item.statiegeld_id).trigger('change');
             $("#m_statiegeld_price").val(item.statiegeld_price);
 
@@ -286,6 +287,7 @@ var save = function(){
             prijs_per_eenheid: $("#m_prijs_per_eenheid").val(),
             kleinste_eenheid_id: $("#m_kleinste_eenheid_id").val(),
             // netto_stuks_prijs: $("#m_netto_stuks_prijs").val(),
+            statiegeld_omdoos_id: $("#m_statiegeld_omdoos_id").val(),
             statiegeld_id: $("#m_statiegeld_id").val(),
             statiegeld_price: $("#m_statiegeld_price").val(),
 		}, 

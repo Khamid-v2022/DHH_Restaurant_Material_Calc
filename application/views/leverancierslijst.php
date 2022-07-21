@@ -60,6 +60,7 @@
 							<th>Prijs per eenheid in verpakking</th>
 							<th>Kleinste eenheid</th>
 							<th>Netto Stuks prijs</th>
+							<th>Omdoos</th>
 							<th>Verpakking</th>
 							<th>Statiegeld</th>
 						</tr>

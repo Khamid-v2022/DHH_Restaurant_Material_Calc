@@ -57,6 +57,7 @@ class Leverancierslijst extends MY_Controller {
 				'€  ' . number_format($list[$index]['prijs_per_eenheid'], 7, ',', '.'), 
 				$list[$index]['kleinste'], 
 				number_format($list[$index]['netto_stuks_prijs'], 2), 
+				$list[$index]['omdoos'],
 				$list[$index]['verpakking'], 
 				$list[$index]['statiegeld']==0 ? '-' : '€  ' . number_format($list[$index]['statiegeld'], 2, ',', '.')
 			);
@@ -332,6 +333,7 @@ class Leverancierslijst extends MY_Controller {
 				$statiegeld_info = $this->function_m->get_item("basic_statiegeld", array("statiegeld"=>$statiegeld, 'company_id'=>$this->session->user_data['company_id']));
 				if(!empty($statiegeld_info)){
 					$item['statiegeld_id'] = $statiegeld_info['id'];
+					$item['statiegeld_omdoos_id'] = $statiegeld_info['id'];
 					$item['statiegeld_price'] = $statiegeld_info['price'];
 				}
 

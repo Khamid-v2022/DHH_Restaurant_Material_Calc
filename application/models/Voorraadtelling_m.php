@@ -13,6 +13,7 @@ class Voorraadtelling_m extends MY_Model{
 		$this->db->join('basic_eenheden b_ed', 'leve.eenheden_id = b_ed.id', 'left');
 		$this->db->join('basic_kleinste b_k', 'leve.kleinste_eenheid_id = b_k.id', 'left');
 		$this->db->join('basic_statiegeld b_s', 'leve.statiegeld_id = b_s.id AND b_s.company_id = ' . $company_id, 'left');
+		// $this->db->join('basic_statiegeld b_s', 'leve.statiegeld_los = b_s.id AND b_s.company_id = ' . $company_id, 'left');
 		$this->db->where($where);
 		$this->db->order_by($order_by);
 		return $this->db->get()->result_array();
@@ -29,9 +30,12 @@ class Voorraadtelling_m extends MY_Model{
 		INNER JOIN basic_inkoopcategorien b_i ON leve.inkoopcategorien_id = b_i.id AND b_i.company_id = " . $company_id . " 
 		INNER JOIN basic_eenheid b_ei ON leve.eenheid_id = b_ei.id AND b_ei.company_id = " . $company_id . " 
 		INNER JOIN basic_eenheden b_ed ON leve.eenheden_id = b_ed.id 
-		INNER JOIN basic_kleinste b_k ON leve.kleinste_eenheid_id = b_k.id 
-		INNER JOIN basic_statiegeld b_s ON leve.statiegeld_id = b_s.id AND b_s.company_id = " . $company_id . "
-		LEFT JOIN (	
+		INNER JOIN basic_kleinste b_k ON leve.kleinste_eenheid_id = b_k.id ";
+		
+		$query .= " INNER JOIN basic_statiegeld b_s ON leve.statiegeld_id = b_s.id AND b_s.company_id = " . $company_id ;
+		// $query .= " INNER JOIN basic_statiegeld b_s ON leve.statiegeld_los = b_s.id AND b_s.company_id = " . $company_id ;
+		
+		$query .= " LEFT JOIN (	
 			SELECT leve_copy_id, COUNT(id) num FROM voorraadteling_puchase WHERE company_id = " . $company_id . "
 			GROUP BY leve_copy_id) puc 
 		ON leve.id = puc.leve_copy_id 

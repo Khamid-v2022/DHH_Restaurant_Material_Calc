@@ -213,6 +213,13 @@ var start_item = function(id){
 
 var stock_modal = function(id){
     $("#m_s_sel_id").val(id);
+
+    // set default as 0 into all of numerial fields
+    $("#m_aantal_omdozen").val(0).trigger("change");
+    $("#m_lege_omdozen").val(0).trigger("change");
+    $("#m_losse_geteld").val(0).trigger("change");
+    $("#m_lege_geteld").val(0).trigger("change");
+
     $.post(SITE_URL + 'voorraadtelling/get_copy_info/' + id, function(resp){
         resp = JSON.parse(resp);
         if(resp.status){
@@ -220,12 +227,11 @@ var stock_modal = function(id){
             // from leveran.. table
             $("#m_inhoud_verpakking").val(info.inhoud_van);
             $("#m_prijs_omdoos").val(info.prijs_van);
-            $("#m_statiegeld_omdoos").val(info.statiegeld_id).trigger("change");
+            $("#m_statiegeld_omdoos").val(info.statiegeld_omdoos_id).trigger("change");
             $("#m_statiegeld_eenheid").val(info.statiegeld_price);
             $("#m_prijs_kleinste_eenheid").val(info.prijs_per_eenheid).trigger("change");
 
-            // initialize
-            $("#m_statiegeld_los").val(0).trigger("change");
+            $("#m_statiegeld_los").val(info.statiegeld_los).trigger("change");
            
         }
     })
