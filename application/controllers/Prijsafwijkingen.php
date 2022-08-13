@@ -38,7 +38,14 @@ class Prijsafwijkingen extends MY_Controller {
 				$chage_rate = 100;
 			}
 
-			$array_item = array($approve . $reject . $manual,  $list1[$index]['recept_naam'], $list1[$index]['old_price'], $list1[$index]['total'], $chage_rate . ' %', "Recept");
+			$array_item = array(
+				$approve . $reject . $manual, 
+				$list1[$index]['recept_naam'], 
+				$list1[$index]['old_price'], 
+				$list1[$index]['total'], 
+				$chage_rate . ' %', 
+				"Recept"
+			);
 			$data[] = $array_item;
 		}
 
@@ -55,7 +62,14 @@ class Prijsafwijkingen extends MY_Controller {
 				$chage_rate = 100;
 			}
 
-			$array_item = array($approve . $reject . $manual,  $list2[$index]['name'], $list2[$index]['old_price'], $list2[$index]['advies_verkoopprijs'], $chage_rate . ' %', "Verkoopproduct");
+			$array_item = array(
+				$approve . $reject . $manual, 
+				$list2[$index]['name'], 
+				$list2[$index]['old_price'], 
+				$list2[$index]['advies_verkoopprijs'], 
+				$chage_rate . ' %', 
+				"Verkoopproduct"
+			);
 			$data[] = $array_item;
 		}
 

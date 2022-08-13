@@ -128,14 +128,25 @@ var reload_table = function(){
 }
 
 var reload_popup_table = function(){
+    var locations = $("#m_locatie").val();
+    var voorraadtelling_id = $("#m_start_sel_id").val();
+
     if(popup_table)
         popup_table.destroy();
     popup_table = $('#popup_table').DataTable({
-        ajax: SITE_URL + 'voorraadtelling/get_leverancierslijst_by_locatie/' + $("#m_start_sel_id").val() + '/' + $("#m_locatie").val(),
-        pageLength: 15,
+        ajax: {
+            "url": SITE_URL + 'voorraadtelling/get_leverancierslijst_by_locatie',
+            "type": 'POST',
+            "data": {
+                "voorraadtelling_id": voorraadtelling_id,
+                "locations": locations
+            }
+        },
+        // SITE_URL + 'voorraadtelling/get_leverancierslijst_by_locatie/' + $("#m_start_sel_id").val() + '/' + $("#m_locatie").val(),
+        pageLength: 10,
         lengthMenu: [
-            [15, 25, 50, -1],
-            [15, 25, 50, 'All'],
+            [10, 25, 50, -1],
+            [10, 25, 50, 'All'],
         ],
         order: [[ 1, "asc" ]],
         columnDefs: [{ 

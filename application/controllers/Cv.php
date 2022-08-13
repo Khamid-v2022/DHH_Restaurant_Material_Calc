@@ -39,7 +39,19 @@ class Cv extends MY_Controller {
 				$nettor = number_format($top / $list[$index]['btw_factor'], 7, ',', '.');
 			}
 			
-			$array_item = array($edit . $copy . $bin, $list[$index]['name'], $list[$index]['ink_name'], $list[$index]['eenheid_name'], $nettor==0 ? '-' : '€  ' . $nettor, $list[$index]['kleinste_name'], '€  ' . number_format($list[$index]['advies_verkoopprijs'], 7, ',', '.'),  '€  ' . number_format($list[$index]['handmatige_verkoopprijs'], 7, ',', '.'),  $list[$index]['btw_name'] . '%',  $list[$index]['btw_factor']);
+			$array_item = array(
+				$edit . $copy . $bin, 
+				$list[$index]['name'], 
+				$list[$index]['ink_name'], 
+				$list[$index]['eenheid_name'], 
+				$nettor==0 ? '-' : '€  ' . $nettor, 
+				$list[$index]['kleinste_name'], 
+				'€  ' . number_format($list[$index]['advies_verkoopprijs'], 7, ',', '.'), 
+				'€  ' . number_format($list[$index]['handmatige_verkoopprijs'], 7, ',', '.'),  
+				$list[$index]['btw_name'] . '%', 
+				$list[$index]['btw_factor']
+			);
+			
 			$data[] = $array_item;
 		}
 

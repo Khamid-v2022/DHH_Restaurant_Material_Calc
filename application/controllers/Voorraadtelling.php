@@ -244,32 +244,46 @@ class Voorraadtelling extends MY_Controller {
 	    exit();
 	}
 
-	public function get_leverancierslijst_by_locatie($voorraadtelling_id, $locatie_id){
+	// public function get_leverancierslijst_by_locatie($voorraadtelling_id, $locatie_id){
+	public function get_leverancierslijst_by_locatie(){
+		$voorraadtelling_id = $this->input->post('voorraadtelling_id');
+		$locatie_ids = $this->input->post('locations');
 
-		$list = $this->voorraadtelling_m->get_stock_list_by_location($voorraadtelling_id, $locatie_id, $this->session->user_data['company_id']);
-
+		$query_array_locations = '(';
 		$data = [];
-		$index = 0;
 		
-		for($index = 0; $index < count($list); $index++){
+		if($locatie_ids){
+			for($index = 0; $index < count($locatie_ids); $index++){
+				if($index != 0)
+					$query_array_locations .= ', ';
+				$query_array_locations .= $locatie_ids[$index];
+			}
+			$query_array_locations .= ')';
+			$list = $this->voorraadtelling_m->get_stock_list_by_location($voorraadtelling_id, $query_array_locations, $this->session->user_data['company_id']);
 
-			$stock = "<button type='button' class='btn border-success text-success btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
 			
-			$additional_stock = "<button type='button' class='btn border-info text-info btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
-			$actions = $stock;
-			if($list[$index]['num'] > 0){
-				$actions = $additional_stock;
+			$index = 0;
+			
+			for($index = 0; $index < count($list); $index++){
+
+				$stock = "<button type='button' class='btn border-success text-success btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
+				
+				$additional_stock = "<button type='button' class='btn border-info text-info btn-flat btn-icon' onclick='stock_modal(" . $list[$index]['id'] . ")' title='voorraadtelling'><i class='icon-calendar2'></i></button>";
+				$actions = $stock;
+				if($list[$index]['num'] > 0){
+					$actions = $additional_stock;
+				}
+
+				$link = "<a href='" . site_url() . "voorraadtelling/view_stock_history/" . $list[$index]['id'] . "' target='_black'>" . $list[$index]['geef_productnaam'] . "</a>";
+
+				$array_item = array($actions, $link);
+				$data[] = $array_item;
 			}
 
-			$link = "<a href='" . site_url() . "voorraadtelling/view_stock_history/" . $list[$index]['id'] . "' target='_black'>" . $list[$index]['geef_productnaam'] . "</a>";
-
-			$array_item = array($actions, $link);
-			$data[] = $array_item;
 		}
-
 		$result = array(      
-	        "recordsTotal" => count($list),
-	        "recordsFiltered" => count($list),
+	        "recordsTotal" => count($data),
+	        "recordsFiltered" => count($data),
 	        "data" => $data
 	    );
 

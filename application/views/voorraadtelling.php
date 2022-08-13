@@ -96,7 +96,7 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3">Locatie</label>
 							<div class="col-sm-9">
-								<select class="select-search" id="m_locatie">
+								<select class="select-search" multiple="multiple"  id="m_locatie">
 									<?php 
 									foreach($locaties as $item){
 										echo '<option value="' . $item['id'] . '">' . $item['name'] . '</option>';

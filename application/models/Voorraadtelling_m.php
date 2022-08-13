@@ -45,12 +45,12 @@ class Voorraadtelling_m extends MY_Model{
 		return $result->result_array();
 	}
 
-	public function get_stock_list_by_location($id, $location_id, $company_id){
+	public function get_stock_list_by_location($id, $location_ids, $company_id){
 		$query = "SELECT leve.*, IFNULL(puc.num, 0) AS num 
 		FROM (
 			SELECT id, geef_productnaam 
 			FROM leverancierslijst_copy 
-			WHERE voorraadtelling_id = " . $id . " AND locatie_id = " . $location_id . ") leve 
+			WHERE voorraadtelling_id = " . $id . " AND locatie_id IN " . $location_ids . ") leve 
 		LEFT JOIN (	
 			SELECT leve_copy_id, COUNT(id) num FROM voorraadteling_puchase WHERE company_id = " . $company_id . " 
 			GROUP BY leve_copy_id) puc 
