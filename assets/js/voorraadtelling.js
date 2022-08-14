@@ -128,21 +128,10 @@ var reload_table = function(){
 }
 
 var reload_popup_table = function(){
-    var locations = $("#m_locatie").val();
-    var voorraadtelling_id = $("#m_start_sel_id").val();
-
     if(popup_table)
         popup_table.destroy();
     popup_table = $('#popup_table').DataTable({
-        ajax: {
-            "url": SITE_URL + 'voorraadtelling/get_leverancierslijst_by_locatie',
-            "type": 'POST',
-            "data": {
-                "voorraadtelling_id": voorraadtelling_id,
-                "locations": locations
-            }
-        },
-        // SITE_URL + 'voorraadtelling/get_leverancierslijst_by_locatie/' + $("#m_start_sel_id").val() + '/' + $("#m_locatie").val(),
+        ajax: SITE_URL + 'voorraadtelling/get_leverancierslijst_by_locatie/' + $("#m_start_sel_id").val() + '/' + $("#m_locatie").val(),
         pageLength: 10,
         lengthMenu: [
             [10, 25, 50, -1],
@@ -284,4 +273,9 @@ var save_stock = function(){
                  reload_popup_table();
             }
         })
+}
+
+var openHistory = function(){
+    var url = SITE_URL + 'voorraadtelling/view_stock_history/' + $("#m_s_sel_id").val();
+     window.open(url, '_blank').focus();
 }

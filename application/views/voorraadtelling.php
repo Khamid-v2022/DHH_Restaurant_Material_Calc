@@ -96,7 +96,7 @@
 						<div class="form-group">
 							<label class="control-label col-sm-3">Locatie</label>
 							<div class="col-sm-9">
-								<select class="select-search" multiple="multiple"  id="m_locatie">
+								<select class="select-search" id="m_locatie">
 									<?php 
 									foreach($locaties as $item){
 										echo '<option value="' . $item['id'] . '">' . $item['name'] . '</option>';
@@ -283,9 +283,12 @@
 
 					</div>
 
-					<div class="modal-footer">
-						<button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">TOEVOEGEN</button>
+					<div class="modal-footer" style="text-align: unset;">
+						<a type="button" class="btn btn-danger" href="#" onclick="openHistory()">History</a>
+						<div style="float:right">
+							<button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">TOEVOEGEN</button>
+						</div>
 					</div>
 				</form>
 			</div>
